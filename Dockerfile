@@ -8,4 +8,4 @@ COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 COPY . /app/
 
-CMD gunicorn --preload --reload --bind :8000 --workers 3 classroometrics.wsgi:application --log-file=/var/log/gunicorn.log
+CMD daphne -b 0.0.0.0 -p 8000 classroometrics.asgi:application

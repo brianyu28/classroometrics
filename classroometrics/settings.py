@@ -31,6 +31,7 @@ CSRF_TRUSTED_ORIGINS = ["https://classroometrics.com"]
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'core',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -151,3 +152,13 @@ LOGGING = {
          },
      },
  }
+
+ASGI_APPLICATION = 'classroometrics.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}

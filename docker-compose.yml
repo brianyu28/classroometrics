@@ -42,6 +42,15 @@ services:
       - proxy
       - classroometrics
 
+  redis:
+    image: redis:7.0-alpine
+    restart: always
+    expose:
+      - "6379"
+    command: redis-server --save 60 1 --loglevel warning
+    networks:
+      - classroometrics
+
 networks:
   proxy:
     name: proxy

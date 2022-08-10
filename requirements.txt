@@ -1,3 +1,4 @@
 Django>=4.0,<4.1
-gunicorn
+channels>=3.0,<3.1
+channels_redis>=3.4,<3.5
 mysqlclient

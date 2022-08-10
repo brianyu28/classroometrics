@@ -1,9 +1,11 @@
+import Temporary from "./Temporary";
+
 function App() {
-  return (
-    <div>
-      Hello!
-    </div>
-  );
+    return (
+        <div>
+            <Temporary />
+        </div>
+    );
 }
 
 export default App;
