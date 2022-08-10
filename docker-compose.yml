@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  nginx:
+    build: ./nginx
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8001"
+    environment:
+      - VIRTUAL_HOST=classroometrics.com
+      - LETSENCRYPT_HOST=classroometrics.com
+      - VIRTUAL_PORT=8001
+    depends_on:
+      - "web"
+    networks:
+      - proxy
+      - classroometrics
+
+  web:
+    build: .
+    volumes:
+      - .:/app
+    expose:
+      - "8000"
+    env_file:
+      - app.env
+    depends_on:
+      - "db"
+    networks:
+      - classroometrics
+
+  db:
+    image: mariadb:10.7.3
+    volumes:
+      - /var/lib/docker_data/classroometrics:/var/lib/mysql
+    expose:
+      - "3306"
+    env_file:
+      - app.env
+    networks:
+      - proxy
+      - classroometrics
+
+networks:
+  proxy:
+    name: proxy
+  classroometrics:
+    name: classroometrics

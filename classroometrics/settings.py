@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,18 +20,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9^jqqq4c=+pa+ilqigqev(b3wx#d&l=twid(*jjkrbx+mdq-$1'
+DEBUG = os.environ.get("DEBUG_MODE") == "1"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.environ.get("APP_SECRET_KEY")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "classroometrics.com"]
 
+CSRF_TRUSTED_ORIGINS = ["https://classroometrics.com"]
 
 # Application definition
 
 INSTALLED_APPS = [
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+AUTH_USER_MODEL = "core.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,9 +77,13 @@ WSGI_APPLICATION = 'classroometrics.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("MYSQL_DATABASE"),
+        "USER": os.environ.get("MYSQL_USER"),
+        "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
+        "HOST": os.environ.get("MYSQL_HOST"),
+        "PORT": os.environ.get("MYSQL_PORT", "3306")
     }
 }
 
@@ -115,9 +122,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_ROOT = "/app/static/"
+STATIC_URL = "/static"
+STATICFILES_DIRS = [
+    BASE_DIR / "client" / "dist",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGGING = {
+     'version': 1,
+     'disable_existing_loggers': False,
+     'handlers': {
+         'file': {
+             'level': 'DEBUG',
+             'class': 'logging.FileHandler',
+             'filename': '/var/log/debug.log',
+         },
+     },
+     'loggers': {
+         'django': {
+             'handlers': ['file'],
+             'level': 'DEBUG',
+             'propagate': True,
+         },
+     },
+ }
