@@ -6,7 +6,10 @@ function Temporary() {
     const [messageHistory, setMessageHistory] = useState([]);
     const [currentMessage, setCurrentMessage] = useState("");
 
-    const webSocketURL = 'ws://' + window.location.host + '/ws/example/';
+    const webSocketURL = (
+        (location.protocol === 'https:' ? 'wss://' : 'ws://') +
+        window.location.host + '/ws/example/'
+    );
     const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket(webSocketURL);
 
     useEffect(() => {
