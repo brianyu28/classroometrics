@@ -1,4 +1,7 @@
-// Temporary component - for testing, not meant to be used in production.
+/**
+ * Temporary component - for testing, not meant to be used in production.
+ */
+
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useState, useEffect } from 'react';
 
@@ -14,11 +17,11 @@ function Temporary() {
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
-            setMessageHistory(history => history.concat(lastJsonMessage.message));
+            setMessageHistory(history => history.concat((lastJsonMessage as any).message));
         }
     }, [lastJsonMessage, setMessageHistory]);
 
-    const updateCurrentMessage = (event) => {
+    const updateCurrentMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCurrentMessage(event.target.value);
     };
 

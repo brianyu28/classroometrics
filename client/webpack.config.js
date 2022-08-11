@@ -3,10 +3,12 @@
 const path = require('path');
 
 const isProduction = process.env.NODE_ENV == 'production';
-const stylesHandler = 'style-loader';
 
 const config = {
-    entry: './src/index.js',
+    entry: {
+        index: './src/entrypoints/index.tsx',
+        viewer: './src/entrypoints/viewer.tsx',
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
     },
@@ -17,12 +19,24 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.tsx?$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },
             {
-                test: /\.css$/i,
-                use: [stylesHandler,'css-loader'],
+                test: /\.s[ac]ss$/i,
+                use: [
+                  // Creates `style` nodes from JS strings
+                  "style-loader",
+                  // Translates CSS into CommonJS
+                  "css-loader",
+                  // Compiles Sass to CSS
+                  "sass-loader",
+                ],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -31,6 +45,12 @@ const config = {
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+        alias: {
+            crmet: path.resolve(__dirname, 'src'),
+        }
     },
 };
 
