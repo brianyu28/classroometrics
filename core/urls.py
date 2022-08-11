@@ -1,7 +1,8 @@
 from django.urls import re_path
 
-from . import views
+from .views import home
 
 urlpatterns = [
-    re_path("^(?P<path>([^/]+/)*)$", views.index, name="index"),
+    # Home
+    re_path("^(?P<path>([^/]+/)*)$", home.index, name="index"),
 ]

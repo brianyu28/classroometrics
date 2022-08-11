@@ -33,6 +33,7 @@ CSRF_TRUSTED_ORIGINS = ["https://classroometrics.com"]
 INSTALLED_APPS = [
     'channels',
     'core',
+    'api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,7 +125,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_ROOT = "/app/static/"
-STATIC_URL = "/static"
+STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "client" / "dist",
 ]
@@ -139,7 +140,7 @@ LOGGING = {
      'disable_existing_loggers': False,
      'handlers': {
          'file': {
-             'level': 'DEBUG',
+             'level': 'WARNING',
              'class': 'logging.FileHandler',
              'filename': '/var/log/debug.log',
          },
@@ -147,7 +148,7 @@ LOGGING = {
      'loggers': {
          'django': {
              'handlers': ['file'],
-             'level': 'DEBUG',
+             'level': 'WARNING',
              'propagate': True,
          },
      },
