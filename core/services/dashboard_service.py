@@ -54,3 +54,17 @@ class DashboardService:
             List[Dashboard] -- List of all dashboards owned by the user
         """
         return user.dashboards.all()
+
+
+    @staticmethod
+    def get_dashboard_by_identifier(identifier: str) -> Dashboard | None:
+        """
+        Return a dashboard based on its identifier.
+
+        Arguments:
+            identifier: str -- Dashboard identifier
+
+        Returns:
+            Dashboard | None -- Dashboard if it exists, or None
+        """
+        return Dashboard.objects.filter(identifier=identifier).first()

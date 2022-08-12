@@ -14,7 +14,7 @@ function App() {
 
     useEffect(() => {
         if (isUserLoggedIn && location.pathname == '/app/') {
-            navigate('/app/dashboards');
+            navigate('/app/rooms');
         }
     }, [location, isUserLoggedIn]);
 

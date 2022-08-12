@@ -10,6 +10,7 @@ urlpatterns = [
     path("auth/logout", auth.logout, name="logout"),
     path("auth/me", auth.me, name="me"),
 
-    # Dashboard
+    # Room dashboards
     path("dashboards", dashboard.dashboards, name="dashboards"),
+    path("dashboards/<str:identifier>", dashboard.dashboard, name="dashboard"),
 ]

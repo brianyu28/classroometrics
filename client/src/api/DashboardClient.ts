@@ -8,3 +8,7 @@ export function getDashboards(auth: UserAuthentication) {
 export function createDashboard(auth: UserAuthentication, identifier: string, title: string) {
     return apiPost(auth, '/dashboards', {identifier, title});
 }
+
+export function getDashboard(identifier: string) {
+    return apiGet(null, `/dashboards/${identifier}`);
+}

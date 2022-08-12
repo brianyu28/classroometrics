@@ -46,3 +46,14 @@ def dashboards(user: User, request: HttpRequest, body: dict) -> JsonResponse:
         except DashboardException:
             return api_error("Dashboard identifier cannot be blank.")
         return JsonResponse(dashboard.serialize())
+
+
+def dashboard(request: HttpRequest, identifier: str) -> JsonResponse:
+    """
+    Get the current state of the dashboard for a room.
+    """
+    dashboard = DashboardService.get_dashboard_by_identifier(identifier)
+    if dashboard is None:
+        return api_error("No such room")
+    return JsonResponse(dashboard.serialize())
+

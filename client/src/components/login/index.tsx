@@ -33,7 +33,7 @@ function Login({
                 focusUsernameField();
             } else {
                 setUserAuth(data);
-                navigate('/app/dashboards');
+                navigate('/app/rooms');
             }
         })
 

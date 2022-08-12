@@ -6,7 +6,7 @@ function DashboardManager() {
 
     return (
         <div>
-            <h2>Dashboard Manager</h2>
+            <h2>Classroom Dashboard</h2>
             {dashboardIdentifier}
         </div>
     );

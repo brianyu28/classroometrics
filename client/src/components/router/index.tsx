@@ -27,8 +27,8 @@ function Router() {
                 <Routes>
                     <Route path="/app/login" element={<Login onUpdateUserAuth={setUserAuth} />} />
                     <Route path="/app" element={<App />}>
-                        <Route path="dashboards" element={<Dashboards />} />
-                        <Route path="dashboards/:dashboardIdentifier" element={<DashboardManager />} />
+                        <Route path="rooms" element={<Dashboards />} />
+                        <Route path="rooms/:dashboardIdentifier" element={<DashboardManager />} />
                         <Route path="*" element={<div>Page Not Found</div>} />
                     </Route>
                 </Routes>

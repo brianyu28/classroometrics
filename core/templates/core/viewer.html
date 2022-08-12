@@ -1,0 +1,13 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Classroometrics</title>
+        <script type="application/javascript" src="{% static 'viewer.js' %}"></script>
+    </head>
+    <body>
+        {{ identifier|json_script:"room-identifier" }}
+        <div id="root"></div>
+    </body>
+</html>

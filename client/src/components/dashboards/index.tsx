@@ -23,11 +23,11 @@ function Dashboards() {
 
     return (
         <div>
-            User Dashboards
+            Rooms
             <ul>
                 {dashboards.map(dashboard =>
                     <li key={dashboard.id}>
-                        <Link to={`/app/dashboards/${dashboard.identifier}`}>
+                        <Link to={`/app/rooms/${dashboard.identifier}`}>
                             {dashboard.identifier}
                         </Link>
                     </li>

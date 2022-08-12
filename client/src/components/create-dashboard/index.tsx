@@ -25,7 +25,7 @@ function CreateDashboard() {
             if ('error' in data) {
                 console.log(data.error);
             } else {
-                navigate(`/app/dashboards/${data.identifier}`);
+                navigate(`/app/rooms/${data.identifier}`);
             }
         });
         return false;
@@ -35,7 +35,7 @@ function CreateDashboard() {
 
     return (
         <div>
-            <h2>Create a New Dashboard</h2>
+            <h2>Create a New Room</h2>
             <form onSubmit={createNewDashboard}>
                 <input type="text" value={identifier} onChange={updateIdentifier} placeholder="Identifier" />
                 <input type="text" value={title} onChange={updateTitle} placeholder="Title" />
