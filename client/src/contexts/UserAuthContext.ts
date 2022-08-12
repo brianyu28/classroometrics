@@ -6,6 +6,14 @@ import { createContext } from "react";
 
 import { UserAuthentication } from "crmet/data/User";
 
-const UserAuthContext = createContext<UserAuthentication>(null);
+interface UserAuthContextProps {
+    userAuth: UserAuthentication | null,
+    handleLogout: () => void,
+}
+
+const UserAuthContext = createContext<UserAuthContextProps>({
+    userAuth: null,
+    handleLogout: () => {},
+});
 
 export default UserAuthContext;

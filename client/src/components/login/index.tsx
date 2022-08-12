@@ -1,7 +1,8 @@
 import { login } from 'crmet/api/AuthenticationClient';
 import { UserAuthentication } from 'crmet/data/User';
-import { useFocus } from 'crmet/util/hooks';
+import { useFocus, useInputFieldState } from 'crmet/util/hooks';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './style.scss';
 
 interface LoginProps {
@@ -13,22 +14,14 @@ function Login({
 }: LoginProps) {
 
     const [error, setError] = useState(null);
-    const [username, setUsername] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+    const [username, setUsername, updateUsername] = useInputFieldState('');
+    const [password, setPassword, updatePassword] = useInputFieldState('');
 
     const [usernameField, focusUsernameField] = useFocus();
-
-    const updateUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
-    }
-
-    const updatePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    }
+    const navigate = useNavigate();
 
     const submitLoginForm = (event: React.FormEvent) => {
         event.preventDefault();
-        console.log(username);
 
         login(username, password)
         .then(res => res.json())
@@ -40,6 +33,7 @@ function Login({
                 focusUsernameField();
             } else {
                 setUserAuth(data);
+                navigate('/app/dashboards');
             }
         })
 

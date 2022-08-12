@@ -1,6 +1,6 @@
 import { logout, me } from "crmet/api/AuthenticationClient";
 import { UserAuthentication } from "crmet/data/User";
-import { Ref, useEffect, useState } from "react";
+import React, { Ref, useEffect, useState } from "react";
 import { useRef } from "react"
 
 /**
@@ -31,10 +31,29 @@ export function usePersistentState<T>(defaultValue: T, key: string): [T, (value:
 }
 
 /**
+ * Hook for state that updates based on input field.
+ * - setValue changes the state directly
+ * - updateValue changes the state as an event handler on an input field
+ */
+export function useInputFieldState(defaultValue: string): [
+    string,
+    (value: string) => void,
+    (event: React.ChangeEvent<HTMLInputElement>) => void,
+] {
+    const [value, setValue] = useState<string>(defaultValue);
+
+    const updateValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(event.target.value);
+    }
+
+    return [value, setValue, updateValue];
+}
+
+/**
  * Hook to get current user authentication.
  */
 export function useUserAuth():
-    [ UserAuthentication,
+    [ UserAuthentication | null,
      (userAuth: UserAuthentication) => void,
      boolean,
      () => void,

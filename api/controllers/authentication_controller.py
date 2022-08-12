@@ -5,7 +5,6 @@ from django.views.decorators.http import require_http_methods
 
 from core.models import User
 from core.services.authentication_service import AuthenticationService
-from core.services.user_token_service import UserTokenService
 
 from api.util import parse_json, require_authentication, require_fields
 
@@ -18,11 +17,11 @@ def login(request: HttpRequest, body: dict) -> JsonResponse:
     Accept user credentials and return a user token.
 
     Request parameters:
-        username (str): Username
-        password (str): Password
+        username: str -- Username
+        password: str -- Password
 
     Optional request parameters:
-        create_session (bool): Whether to save user session, default False
+        create_session: bool -- Whether to save user session, default False
     """
     username = body["username"]
     password = body["password"]
