@@ -4,6 +4,8 @@
  */
 import { createContext } from "react";
 
-const UserContext = createContext(null);
+import { UserAuthentication } from "crmet/data/User";
 
-export default UserContext;
+const UserAuthContext = createContext<UserAuthentication>(null);
+
+export default UserAuthContext;

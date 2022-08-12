@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 const config = {
     entry: {
-        index: './src/entrypoints/index.tsx',
+        main: './src/entrypoints/main.tsx',
         viewer: './src/entrypoints/viewer.tsx',
     },
     output: {

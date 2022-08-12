@@ -76,7 +76,7 @@ class UserTokenService:
         # Generate a token string that isn't in use
         while True:
             token_string = secrets.token_urlsafe(USER_TOKEN_LENGTH)
-            if not UserToken.does_token_exist(token_string):
+            if not UserTokenService.does_token_exist(token_string):
                 break
 
         # Create new token

@@ -2,10 +2,10 @@ import json
 
 from functools import wraps
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from typing import Callable, List
 
 from core.models import UserToken
+from core.services.authentication_service import AuthenticationException, AuthenticationService
 
 
 def api_error(message: str, status: int = 400) -> JsonResponse:
@@ -84,21 +84,13 @@ def require_authentication(function: Callable) -> Callable:
     """
     @wraps(function)
     def wrap(request, *args, **kwargs):
-
-        # Allow Django signed-in user.
-        if not request.user.is_anonymous:
-            return function(request.user, request, *args, **kwargs)
-
-        # Otherwise, check for Authentication header.
-        auth_header = request.headers.get("Authorization")
-        if auth_header is None:
-            return api_error("Authentication required.")
-        parts = auth_header.strip().split(" ")
-        if len(parts) != 2 or parts[0] != "token":
-            return api_error("Invalid format for authentication header.")
-        token = parts[1]
-        user = UserToken.get_user_from_token(token)
-        if user is None:
-            return api_error("Invalid credentials.", 403)
-        return csrf_exempt(function(user, request, *args, **kwargs))
+        # See if we have a user from the Authorization token during CSRF middleware
+        user = getattr(request, "token_authenticated_user", None)
+        if user is not None:
+            return function(user, request, *args, **kwargs)
+        try:
+            user = AuthenticationService.authenticate_user_from_request_headers(request)
+        except AuthenticationException as e:
+            return api_error(str(e))
+        return function(user, request, *args, **kwargs)
     return wrap
