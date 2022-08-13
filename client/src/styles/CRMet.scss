@@ -1,1 +1,7 @@
-$example-color: blue;
+$background-color: #508eb5;
+$button-color: #8cbddb;
+
+body {
+    background-color: $background-color;
+    font-family: Verdana, sans-serif;
+}

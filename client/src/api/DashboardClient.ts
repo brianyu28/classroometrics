@@ -9,6 +9,9 @@ export function createDashboard(auth: UserAuthentication, identifier: string, ti
     return apiPost(auth, '/dashboards', {identifier, title});
 }
 
-export function getDashboard(identifier: string) {
-    return apiGet(null, `/dashboards/${identifier}`);
+/**
+ * Get the dashboard for student perspective: only visible elements.
+ */
+export function getDashboardForStudent(identifier: string) {
+    return apiGet(null, `/dashboards/view/${identifier}`);
 }

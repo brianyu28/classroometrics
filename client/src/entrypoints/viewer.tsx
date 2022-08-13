@@ -1,6 +1,8 @@
-import { RoomViewer } from 'crmet/components/room-viewer';
+import RoomViewer from 'crmet/components/room-viewer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import 'crmet/styles/CRMet.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = ReactDOM.createRoot(document.getElementById('root'));

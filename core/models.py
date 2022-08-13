@@ -35,10 +35,12 @@ class Dashboard(models.Model):
     def __str__(self):
         return f"{self.title} ({self.owner.username})"
 
-    def serialize(self):
-        elements = self.elements.order_by("section", "order").all()
+    def serialize(self, visible_only=False):
+        elements = self.elements.order_by("section", "order")
+        if visible_only:
+            elements = elements.filter(is_visible=True)
         groups = []
-        for element in elements:
+        for element in elements.all():
             if element.section == len(groups):
                 groups.append([element.serialize()])
             else:

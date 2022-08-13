@@ -48,12 +48,12 @@ def dashboards(user: User, request: HttpRequest, body: dict) -> JsonResponse:
         return JsonResponse(dashboard.serialize())
 
 
-def dashboard(request: HttpRequest, identifier: str) -> JsonResponse:
+def dashboard_viewer(request: HttpRequest, identifier: str) -> JsonResponse:
     """
-    Get the current state of the dashboard for a room.
+    Get the current visible state of the dashboard for a student.
     """
     dashboard = DashboardService.get_dashboard_by_identifier(identifier)
     if dashboard is None:
         return api_error("No such room")
-    return JsonResponse(dashboard.serialize())
+    return JsonResponse(DashboardService.serialize_dashboard(dashboard, visible_only=True))
 

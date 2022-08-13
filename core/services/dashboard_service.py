@@ -68,3 +68,17 @@ class DashboardService:
             Dashboard | None -- Dashboard if it exists, or None
         """
         return Dashboard.objects.filter(identifier=identifier).first()
+
+
+    @staticmethod
+    def serialize_dashboard(dashboard: Dashboard, visible_only: bool = False) -> dict:
+        """
+        Serialize a dashboard.
+
+        Arguments:
+            dashboard: Dashboard -- The dashboard to serialize
+
+        Optional arguments:
+            visible_only: bool -- Whether only the visible elements should be returned, default False
+        """
+        return dashboard.serialize(visible_only=visible_only)

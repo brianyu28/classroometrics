@@ -12,5 +12,5 @@ urlpatterns = [
 
     # Room dashboards
     path("dashboards", dashboard.dashboards, name="dashboards"),
-    path("dashboards/<str:identifier>", dashboard.dashboard, name="dashboard"),
+    path("dashboards/view/<str:identifier>", dashboard.dashboard_viewer, name="dashboard_viewer"),
 ]
