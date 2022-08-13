@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .controllers import authentication_controller as auth
-from .controllers import dashboard_controller as dashboard
+from .controllers import room_controller as room
 
 urlpatterns = [
 
@@ -10,7 +10,7 @@ urlpatterns = [
     path("auth/logout", auth.logout, name="logout"),
     path("auth/me", auth.me, name="me"),
 
-    # Room dashboards
-    path("dashboards", dashboard.dashboards, name="dashboards"),
-    path("dashboards/view/<str:identifier>", dashboard.dashboard_viewer, name="dashboard_viewer"),
+    # Rooms
+    path("rooms", room.rooms, name="rooms"),
+    path("rooms/view/<str:identifier>", room.room_viewer, name="room_viewer"),
 ]

@@ -1,13 +1,13 @@
-from core.models import Dashboard, Element
+from core.models import Room, Element
 
 class ElementService:
 
     @staticmethod
-    def reset_elements_to_default(dashboard: Dashboard):
+    def reset_elements_to_default(room: Room):
         """
-        Reset all dashboard elements to a default list.
+        Reset all room elements to a default list.
         """
-        for element in dashboard.elements.all():
+        for element in room.elements.all():
             element.delete()
         default_elements = [
             Element(icon="sentiment.negative", identifier="sentiment.negative", name="", section=0, order=0, is_visible=True),
@@ -23,5 +23,5 @@ class ElementService:
             Element(icon="link", identifier="link.google", name="Google", section=2, order=0, is_visible=False, link="https://google.com/"),
         ]
         for element in default_elements:
-            element.dashboard = dashboard
+            element.room = room
             element.save()

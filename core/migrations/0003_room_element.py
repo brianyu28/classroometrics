@@ -13,12 +13,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Dashboard',
+            name='Room',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('identifier', models.CharField(max_length=200, unique=True)),
                 ('title', models.CharField(blank=True, max_length=200)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='dashboards', to=settings.AUTH_USER_MODEL)),
+                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='rooms', to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(blank=True, max_length=200)),
                 ('section', models.IntegerField()),
                 ('order', models.IntegerField()),
-                ('dashboard', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='elements', to='core.dashboard')),
+                ('room', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='elements', to='core.room')),
             ],
         ),
     ]

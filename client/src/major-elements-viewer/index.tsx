@@ -1,5 +1,5 @@
 import MajorElementViewer from "crmet/components/major-element-viewer";
-import { Element } from "crmet/data/Dashboard";
+import { Element } from "crmet/data/Room";
 
 import "./style.scss";
 

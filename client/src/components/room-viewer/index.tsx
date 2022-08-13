@@ -1,5 +1,5 @@
-import { getDashboardForStudent } from "crmet/api/DashboardClient";
-import { Dashboard } from "crmet/data/Dashboard";
+import { getRoomForStudent } from "crmet/api/RoomClient";
+import { Room } from "crmet/data/Room";
 import { Error } from "crmet/data/Error";
 import MajorElementsViewer from "crmet/major-elements-viewer";
 import { useEffect, useState } from "react";
@@ -13,35 +13,35 @@ function RoomViewer({
     identifier
 }: RoomViewerProps) {
 
-    const [dashboard, setDashboard] = useState<Dashboard | null>(null);
+    const [room, setRoom] = useState<Room | null>(null);
 
-    const reloadDashboard = () => {
-        getDashboardForStudent(identifier)
+    const reloadRoom = () => {
+        getRoomForStudent(identifier)
         .then(res => res.json())
-        .then((data: Dashboard | Error) => {
+        .then((data: Room | Error) => {
             if ('error' in data) {
                 console.log(data.error);
                 return;
             }
-            setDashboard(data);
+            setRoom(data);
         })
     };
 
-    useEffect(reloadDashboard, [identifier]);
+    useEffect(reloadRoom, [identifier]);
 
-    if (dashboard === null) {
+    if (room === null) {
         return <div></div>;
     }
 
     return (
         <div>
-            {dashboard.groups.length > 0 &&
+            {room.groups.length > 0 &&
                 <MajorElementsViewer
-                elements={dashboard.groups[0]}
+                elements={room.groups[0]}
                 />
             }
-            {dashboard.groups.length > 1 &&
-                dashboard.groups.slice(1).map((group, i) => (
+            {room.groups.length > 1 &&
+                room.groups.slice(1).map((group, i) => (
                 <MinorElementsViewer
                     key={i}
                     elements={group}

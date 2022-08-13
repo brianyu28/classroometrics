@@ -1,12 +1,12 @@
 from django.shortcuts import HttpResponse, render
 
-from core.services.dashboard_service import DashboardService
+from core.services.room_service import RoomService
 
 def index(request, path):
     return render(request, "core/index.html")
 
 def viewer(request, identifier):
-    dashboard = DashboardService.get_dashboard_by_identifier(identifier)
-    if dashboard is None:
+    room = RoomService.get_room_by_identifier(identifier)
+    if room is None:
         return HttpResponse("Classroom not found.")
     return render(request, "core/viewer.html", {"identifier": identifier})

@@ -27,9 +27,9 @@ class UserToken(models.Model):
         }
 
 
-class Dashboard(models.Model):
+class Room(models.Model):
     identifier = models.CharField(max_length=200, unique=True)
-    owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="dashboards")
+    owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="rooms")
     title = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
@@ -55,7 +55,7 @@ class Dashboard(models.Model):
 
 
 class Element(models.Model):
-    dashboard = models.ForeignKey("Dashboard", on_delete=models.CASCADE, related_name="elements")
+    room = models.ForeignKey("Room", on_delete=models.CASCADE, related_name="elements")
     icon = models.CharField(max_length=200)
     identifier = models.CharField(max_length=200)
     name = models.CharField(max_length=200, blank=True)
@@ -70,7 +70,7 @@ class Element(models.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "dashboard_id": self.dashboard.id,
+            "room_id": self.room.id,
             "icon": self.icon,
             "identifier": self.identifier,
             "name": self.name,

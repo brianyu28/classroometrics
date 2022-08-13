@@ -1,6 +1,6 @@
 export interface Element {
     id: number,
-    dashboard_id: number,
+    room_id: number,
     icon: string,
     identifier: string,
     name: string,
@@ -10,7 +10,7 @@ export interface Element {
     link: string,
 }
 
-export interface Dashboard {
+export interface Room {
     id: number,
     identifier: string,
     owner_id: number,

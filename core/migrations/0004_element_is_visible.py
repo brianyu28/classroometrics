@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0003_dashboard_element'),
+        ('core', '0003_room_element'),
     ]
 
     operations = [

@@ -1,27 +1,27 @@
-import { createDashboard } from "crmet/api/DashboardClient";
+import { createRoom } from "crmet/api/RoomClient";
 import UserAuthContext from "crmet/contexts/UserAuthContext";
-import { Dashboard } from "crmet/data/Dashboard";
+import { Room } from "crmet/data/Room";
 import { Error } from "crmet/data/Error";
 import { useInputFieldState } from "crmet/util/hooks";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateDashboard() {
+function CreateRoom() {
 
     const { userAuth } = useContext(UserAuthContext);
     const [identifier, setIdentifier, updateIdentifier] = useInputFieldState('');
     const [title, setTitle, updateTitle] = useInputFieldState('');
     const navigate = useNavigate();
 
-    const createNewDashboard = (event: React.FormEvent) => {
+    const createNewRoom = (event: React.FormEvent) => {
         event.preventDefault();
         if (identifier === '') {
             return;
         }
 
-        createDashboard(userAuth, identifier, title)
+        createRoom(userAuth, identifier, title)
         .then(res => res.json())
-        .then((data: Dashboard | Error) => {
+        .then((data: Room | Error) => {
             if ('error' in data) {
                 console.log(data.error);
             } else {
@@ -31,18 +31,18 @@ function CreateDashboard() {
         return false;
     };
 
-    const canSubmitCreateDashboardForm = identifier !== '' && title !== '';
+    const canSubmitCreateRoomForm = identifier !== '' && title !== '';
 
     return (
         <div>
             <h2>Create a New Room</h2>
-            <form onSubmit={createNewDashboard}>
+            <form onSubmit={createNewRoom}>
                 <input type="text" value={identifier} onChange={updateIdentifier} placeholder="Identifier" />
                 <input type="text" value={title} onChange={updateTitle} placeholder="Title" />
-                <input disabled={!canSubmitCreateDashboardForm} type="submit" value="Create" />
+                <input disabled={!canSubmitCreateRoomForm} type="submit" value="Create" />
             </form>
         </div>
     );
 }
 
-export default CreateDashboard;
+export default CreateRoom;

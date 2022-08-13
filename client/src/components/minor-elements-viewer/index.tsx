@@ -1,4 +1,4 @@
-import { Element } from "crmet/data/Dashboard";
+import { Element } from "crmet/data/Room";
 import MinorElementViewer from "../minor-element-viewer";
 
 import './style.scss';
