@@ -18,7 +18,7 @@ function MinorElementsViewer({
                 }
                 return (
                     <MinorElementViewer
-                        key={element.identifier}
+                        key={element.id}
                         clickable={true}
                         icon={element.icon}
                         name={element.name}

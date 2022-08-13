@@ -48,11 +48,11 @@ def rooms(user: User, request: HttpRequest, body: dict) -> JsonResponse:
         return JsonResponse(room.serialize())
 
 
-def room_viewer(request: HttpRequest, identifier: str) -> JsonResponse:
+def room_viewer(request: HttpRequest, room_id: int) -> JsonResponse:
     """
     Get the current visible state of the room for a student.
     """
-    room = RoomService.get_room_by_identifier(identifier)
+    room = RoomService.get_room_by_id(room_id)
     if room is None:
         return api_error("No such room")
     return JsonResponse(RoomService.serialize_room(room, visible_only=True))

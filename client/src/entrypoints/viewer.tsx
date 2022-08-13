@@ -6,11 +6,11 @@ import 'crmet/styles/CRMet.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const root = ReactDOM.createRoot(document.getElementById('root'));
-  const identifier = JSON.parse(document.getElementById('room-identifier').textContent);
+  const roomId = JSON.parse(document.getElementById('room-id').textContent);
 
   root.render(
     <React.StrictMode>
-      <RoomViewer identifier={identifier} />
+      <RoomViewer id={roomId} />
     </React.StrictMode>
   );
 });

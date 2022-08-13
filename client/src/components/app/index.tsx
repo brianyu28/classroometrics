@@ -24,7 +24,6 @@ function App() {
 
     return (
         <div>
-            User is logged in: {userAuth.user.username}.
             <Outlet />
             <div>
                 <button onClick={handleLogout}>Log Out</button>

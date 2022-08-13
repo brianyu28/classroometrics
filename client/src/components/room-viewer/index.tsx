@@ -6,17 +6,21 @@ import { useEffect, useState } from "react";
 import MinorElementsViewer from "../minor-elements-viewer";
 
 interface RoomViewerProps {
-    identifier: string
+    id: number | null
 };
 
 function RoomViewer({
-    identifier
+    id
 }: RoomViewerProps) {
 
     const [room, setRoom] = useState<Room | null>(null);
 
     const reloadRoom = () => {
-        getRoomForStudent(identifier)
+        if (id === null) {
+            return;
+        }
+
+        getRoomForStudent(id)
         .then(res => res.json())
         .then((data: Room | Error) => {
             if ('error' in data) {
@@ -27,7 +31,16 @@ function RoomViewer({
         })
     };
 
-    useEffect(reloadRoom, [identifier]);
+    useEffect(reloadRoom, [id]);
+
+    if (id === null) {
+        return (
+            <div>
+                <p>The room you requested does not exist.</p>
+                <p><a href="/"><button>Go Back</button></a></p>
+            </div>
+        );
+    }
 
     if (room === null) {
         return <div></div>;

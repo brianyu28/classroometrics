@@ -12,6 +12,6 @@ export function createRoom(auth: UserAuthentication, identifier: string, title: 
 /**
  * Get the room for student perspective: only visible elements.
  */
-export function getRoomForStudent(identifier: string) {
-    return apiGet(null, `/rooms/view/${identifier}`);
+export function getRoomForStudent(id: number) {
+    return apiGet(null, `/rooms/view/${id}`);
 }

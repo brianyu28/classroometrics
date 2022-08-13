@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { getRooms } from "crmet/api/RoomClient";
 import CreateRoom from "crmet/components/create-room";
@@ -10,6 +10,7 @@ function Rooms() {
 
     const { userAuth } = useContext(UserAuthContext);
     const [rooms, setRooms] = useState<Room[]>([]);
+    const navigate = useNavigate();
 
     const refreshRooms = () => {
         getRooms(userAuth)
@@ -21,18 +22,19 @@ function Rooms() {
 
     useEffect(refreshRooms, []);
 
+    const navigateToRoom = (room: Room) => {
+        navigate(`/app/rooms/${room.identifier}`);
+    }
+
     return (
         <div>
-            Rooms
-            <ul>
-                {rooms.map(room =>
-                    <li key={room.id}>
-                        <Link to={`/app/rooms/${room.identifier}`}>
-                            {room.identifier}
-                        </Link>
-                    </li>
-                )}
-            </ul>
+            <h1>Classroometrics: {userAuth.user.username}</h1>
+            <h2>Rooms</h2>
+            {rooms.map(room =>
+                <button key={room.id} onClick={() => navigateToRoom(room)}>
+                    {room.title} - {room.identifier}
+                </button>
+            )}
             <CreateRoom />
         </div>
     );

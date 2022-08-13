@@ -16,7 +16,7 @@ function MajorElementsViewer({
                 if (!element.is_visible) {
                     return;
                 }
-                return <MajorElementViewer key={element.identifier} icon={element.icon} />
+                return <MajorElementViewer key={element.id} icon={element.icon} />
             })}
         </div>
     );

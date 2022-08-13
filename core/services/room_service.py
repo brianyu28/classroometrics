@@ -41,7 +41,6 @@ class RoomService:
             ElementService.reset_elements_to_default(room)
         return room
 
-
     @staticmethod
     def get_rooms_for_user(user: User) -> List[Room]:
         """
@@ -54,7 +53,6 @@ class RoomService:
             List[Room] -- List of all rooms owned by the user
         """
         return user.rooms.all()
-
 
     @staticmethod
     def get_room_by_identifier(identifier: str) -> Room | None:
@@ -69,6 +67,18 @@ class RoomService:
         """
         return Room.objects.filter(identifier=identifier).first()
 
+    @staticmethod
+    def get_room_by_id(id: int) -> Room | None:
+        """
+        Return a room based on its id.
+
+        Arguments:
+            id: int -- Room ID
+
+        Returns:
+            Room | None -- Room if it exists, or None
+        """
+        return Room.objects.get(pk=id)
 
     @staticmethod
     def serialize_room(room: Room, visible_only: bool = False) -> dict:

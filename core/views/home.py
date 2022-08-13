@@ -1,4 +1,4 @@
-from django.shortcuts import HttpResponse, render
+from django.shortcuts import HttpResponse, redirect, render
 
 from core.services.room_service import RoomService
 
@@ -7,6 +7,7 @@ def index(request, path):
 
 def viewer(request, identifier):
     room = RoomService.get_room_by_identifier(identifier)
-    if room is None:
-        return HttpResponse("Classroom not found.")
-    return render(request, "core/viewer.html", {"identifier": identifier})
+    return render(request, "core/viewer.html", {
+        "title": (room.title or "Classroometrics") if room else "Classroometrics",
+        "room_id": room.id if room else None,
+    })

@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Classroometrics</title>
+        <title>{{ title }}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="application/javascript" src="{% static 'viewer.js' %}"></script>
     </head>
     <body>
-        {{ identifier|json_script:"room-identifier" }}
+        {{ room_id|json_script:"room-id" }}
         <div id="root"></div>
     </body>
 </html>

@@ -1,7 +1,26 @@
-$background-color: #508eb5;
-$button-color: #8cbddb;
+$background-color: #8cbddb;
+$button-color: #508eb5;
 
 body {
     background-color: $background-color;
     font-family: Verdana, sans-serif;
+    text-align: center;
+}
+
+input {
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 8px;
+    margin: 3px;
+}
+
+button {
+    padding: 5px;
+    margin: 3px;
+}
+
+.error-text {
+    color: #911313;
+    font-style: italic;
 }
