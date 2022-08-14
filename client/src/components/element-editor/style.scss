@@ -1,0 +1,34 @@
+@import "~crmet/styles/CRMet";
+
+.element-editor {
+    border-radius: 10px;
+    background-color: $button-color;
+    cursor: pointer;
+    font-size: 24px;
+    height: 80px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    padding: 10px;
+
+    &.element-not-visible {
+        filter: brightness(40%);
+    }
+
+    .element-icon {
+        max-width: 50px;
+        max-height: 50px;
+    }
+
+    .element-name {
+        padding-left: 10px;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+
+        .element-link {
+            font-size: 12px;
+        }
+    }
+}

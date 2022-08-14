@@ -34,3 +34,16 @@ export function apiPost(auth: UserAuthentication | null, endpoint: string, data:
         body: JSON.stringify(data || {}),
     })
 }
+
+export function apiPut(auth: UserAuthentication | null, endpoint: string, data: object = null) {
+    const url = BASE_URL + endpoint;
+    const headers = {
+        ...generateApiHeaders(auth),
+        'Content-Type': 'application/json',
+    }
+    return fetch(url, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify(data || {}),
+    })
+}

@@ -12,5 +12,7 @@ urlpatterns = [
 
     # Rooms
     path("rooms", room.rooms, name="rooms"),
-    path("rooms/view/<int:room_id>", room.room_viewer, name="room_viewer"),
+    path("rooms/<int:room_id>", room.room, name="room"),
+    path("teacher/rooms/<str:room_identifier>", room.room_by_identifier, name="room_by_identifier"),
+    path("student/rooms/<int:room_id>", room.room_viewer, name="room_viewer"),
 ]

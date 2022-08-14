@@ -1,7 +1,7 @@
 import { getRoomForStudent } from "crmet/api/RoomClient";
 import { Room } from "crmet/data/Room";
 import { Error } from "crmet/data/Error";
-import MajorElementsViewer from "crmet/major-elements-viewer";
+import MajorElementsViewer from "crmet/components/major-elements-viewer";
 import { useEffect, useState } from "react";
 import MinorElementsViewer from "../minor-elements-viewer";
 

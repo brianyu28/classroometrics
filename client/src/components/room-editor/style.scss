@@ -1,0 +1,10 @@
+.room-editor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow-x: auto;
+
+    & > * {
+        flex-shrink: 0;
+    }
+}

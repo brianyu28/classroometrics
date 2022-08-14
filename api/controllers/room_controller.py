@@ -48,6 +48,20 @@ def rooms(user: User, request: HttpRequest, body: dict) -> JsonResponse:
         return JsonResponse(room.serialize())
 
 
+@require_http_methods(["PUT"])
+@parse_json()
+@require_authentication
+def room(user: User, request: HttpRequest, body: dict, room_id: int) -> JsonResponse:
+    room = RoomService.get_room_for_user_by_id(room_id, user)
+    if room is None:
+        return api_error("No such room")
+
+    # Update room
+    if request.method == "PUT":
+        RoomService.update_room(room, body.get("room", dict()))
+        return JsonResponse(RoomService.serialize_room(room, visible_only=False))
+
+
 def room_viewer(request: HttpRequest, room_id: int) -> JsonResponse:
     """
     Get the current visible state of the room for a student.
@@ -57,3 +71,14 @@ def room_viewer(request: HttpRequest, room_id: int) -> JsonResponse:
         return api_error("No such room")
     return JsonResponse(RoomService.serialize_room(room, visible_only=True))
 
+
+@require_http_methods(["GET"])
+@require_authentication
+def room_by_identifier(user: User, request: HttpRequest, room_identifier: str) -> JsonResponse:
+    """
+    Get the room for a teacher by its identifier.
+    """
+    room = RoomService.get_room_for_user_by_identifier(room_identifier, user)
+    if room is None:
+        return api_error("No such room")
+    return JsonResponse(RoomService.serialize_room(room, visible_only=False))
