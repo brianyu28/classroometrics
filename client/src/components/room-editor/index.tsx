@@ -10,6 +10,7 @@ interface RoomEditorProps {
     room: Room;
     addElementToGroup: (element: Element, groupIndex: number) => void;
     deleteElement: (elementId: number) => void;
+    updateGroup: (groupIndex: number, updatedGroup: Element[]) => void;
     updateVisibilityForElement: (elementId: number, isVisible: boolean) => void;
 }
 
@@ -17,6 +18,7 @@ function RoomEditor({
     addElementToGroup,
     deleteElement,
     room,
+    updateGroup,
     updateVisibilityForElement,
 }: RoomEditorProps) {
 
@@ -37,6 +39,7 @@ function RoomEditor({
                         key={group_number}
                         group={group}
                         deleteElement={deleteElement}
+                        updateGroup={(group: Element[]) => updateGroup(group_number, group)}
                         updateVisibilityForElement={updateVisibilityForElement}
                         shouldShowAddButton={createRoomViewGroup === null}
                         toggleCreateRoomViewOpen={() => setCreateRoomViewGroup(group_number)}

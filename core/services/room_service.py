@@ -162,6 +162,7 @@ class RoomService:
                     # If there is no ID, then create a new element
                     if "id" not in updated_element:
                         ElementService.create_element_from_dict(room, updates)
+                        continue
 
                     # Make sure the element is one of the elements in the room
                     element = element_map.get(updated_element["id"])

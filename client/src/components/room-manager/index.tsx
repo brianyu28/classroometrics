@@ -75,6 +75,14 @@ function RoomManager() {
         saveUpdatedRoom(updatedRoom);
     }
 
+    const updateGroup = (groupIndex: number, updatedGroup: Element[]) => {
+        const updatedRoom = {
+            ...room,
+            groups: room.groups.map((group, index) => index === groupIndex ? updatedGroup : group)
+        };
+        saveUpdatedRoom(updatedRoom);
+    }
+
     useEffect(reloadRoom, [userAuth, roomIdentifier])
 
     const navigateToAllRooms = () => {
@@ -95,6 +103,7 @@ function RoomManager() {
                     room={room}
                     addElementToGroup={addElementToGroup}
                     deleteElement={deleteElement}
+                    updateGroup={updateGroup}
                     updateVisibilityForElement={updateVisibilityForElement}
                 />
             }

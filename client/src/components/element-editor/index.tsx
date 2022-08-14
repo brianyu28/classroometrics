@@ -30,7 +30,8 @@ function ElementEditor({
         event.stopPropagation();
     }
 
-    const handleDelete = () => {
+    const handleDelete = (event: React.MouseEvent) => {
+        event.stopPropagation();
         const confirmation = confirm("Are you sure you want to delete this element?");
         if (!confirmation) {
             return;
