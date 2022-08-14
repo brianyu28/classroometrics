@@ -31,6 +31,15 @@ export function usePersistentState<T>(defaultValue: T, key: string): [T, (value:
 }
 
 /**
+ * Hook for boolean state.
+ */
+export function useBooleanState(defaultValue: boolean): [boolean, () => void] {
+    const [value, setValue] = useState(defaultValue);
+    const toggleValue = () => setValue(!value);
+    return [value, toggleValue];
+}
+
+/**
  * Hook for state that updates based on input field.
  * - setValue changes the state directly
  * - updateValue changes the state as an event handler on an input field
@@ -38,11 +47,11 @@ export function usePersistentState<T>(defaultValue: T, key: string): [T, (value:
 export function useInputFieldState(defaultValue: string): [
     string,
     (value: string) => void,
-    (event: React.ChangeEvent<HTMLInputElement>) => void,
+    (event: React.ChangeEvent<any>) => void,
 ] {
     const [value, setValue] = useState<string>(defaultValue);
 
-    const updateValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updateValue = (event: React.ChangeEvent<any>) => {
         setValue(event.target.value);
     }
 

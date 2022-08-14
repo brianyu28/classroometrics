@@ -1,5 +1,5 @@
 export interface Element {
-    id: number,
+    id?: number,
     room_id: number,
     icon: string,
     identifier: string,

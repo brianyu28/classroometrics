@@ -6,9 +6,11 @@ import CreateRoom from "crmet/components/create-room";
 import UserAuthContext from "crmet/contexts/UserAuthContext";
 import { Room } from "crmet/data/Room";
 
+import "./style.scss";
+
 function Rooms() {
 
-    const { userAuth } = useContext(UserAuthContext);
+    const { userAuth, handleLogout } = useContext(UserAuthContext);
     const [rooms, setRooms] = useState<Room[]>([]);
     const navigate = useNavigate();
 
@@ -36,6 +38,9 @@ function Rooms() {
                 </button>
             )}
             <CreateRoom />
+            <div className="logout-area">
+                <button onClick={handleLogout}>Log Out</button>
+            </div>
         </div>
     );
 }

@@ -41,10 +41,9 @@ class Room(models.Model):
             elements = elements.filter(is_visible=True)
         groups = []
         for element in elements.all():
-            if element.section == len(groups):
-                groups.append([element.serialize()])
-            else:
-                groups[-1].append(element.serialize())
+            while element.section >= len(groups):
+                groups.append([])
+            groups[-1].append(element.serialize())
         return {
             "id": self.id,
             "identifier": self.identifier,

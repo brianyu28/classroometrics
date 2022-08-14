@@ -1,6 +1,7 @@
 import { getTeacherRoomByIdentifier, updateRoom } from "crmet/api/RoomClient";
 import UserAuthContext from "crmet/contexts/UserAuthContext";
-import { Room } from "crmet/data/Room";
+import { Error } from "crmet/data/Error";
+import { Element, Room } from "crmet/data/Room";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomEditor from "../room-editor";
@@ -29,8 +30,11 @@ function RoomManager() {
     const saveUpdatedRoom = (updatedRoom: Room) => {
         updateRoom(userAuth, updatedRoom)
         .then(res => res.json())
-        .then(data => {
-            console.log(data);
+        .then((data : Room | Error) => {
+            if ('error' in data) {
+                return;
+            }
+            setRoom(data);
         });
     };
 
@@ -45,7 +49,29 @@ function RoomManager() {
                 }))
             ))
         };
-        setRoom(updatedRoom);
+        saveUpdatedRoom(updatedRoom);
+    }
+
+    const addElementToGroup = (element: Element, groupIndex: number) => {
+        const updatedGroups: Element[][] = (
+            groupIndex >= room.groups.length ?
+            [...room.groups, [element]] :
+            room.groups.map((group, i) => (
+                i === groupIndex ? [...group, element] : group
+            ))
+        );
+        const updatedRoom = {
+            ...room,
+            groups: updatedGroups
+        };
+        saveUpdatedRoom(updatedRoom);
+    }
+
+    const deleteElement = (elementId: number) => {
+        const updatedRoom = {
+            ...room,
+            groups: room.groups.map(group => group.filter(element => element.id !== elementId))
+        };
         saveUpdatedRoom(updatedRoom);
     }
 
@@ -57,7 +83,7 @@ function RoomManager() {
 
     return (
         <div>
-            <h2>Room: {roomIdentifier}</h2>
+            <h2>Room{room !== null && `: ${room.title}` }</h2>
             <div>
                 <button>Metrics</button>
                 <button>Edit</button>
@@ -67,6 +93,8 @@ function RoomManager() {
             {room !== null &&
                 <RoomEditor
                     room={room}
+                    addElementToGroup={addElementToGroup}
+                    deleteElement={deleteElement}
                     updateVisibilityForElement={updateVisibilityForElement}
                 />
             }

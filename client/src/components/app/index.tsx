@@ -2,11 +2,10 @@ import { useContext, useEffect } from "react";
 import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import UserAuthContext from "crmet/contexts/UserAuthContext";
-import { UserAuthentication } from "crmet/data/User";
 
 function App() {
 
-    const { userAuth, handleLogout } = useContext(UserAuthContext);
+    const { userAuth } = useContext(UserAuthContext);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -25,9 +24,6 @@ function App() {
     return (
         <div>
             <Outlet />
-            <div>
-                <button onClick={handleLogout}>Log Out</button>
-            </div>
         </div>
     )
 }

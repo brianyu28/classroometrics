@@ -6,11 +6,13 @@ import "./style.scss";
 
 interface ElementEditorProps {
     element: Element;
+    onDelete: () => void;
     updateVisibilityForElement: (elementId: number, isVisible: boolean) => void;
 }
 
 function ElementEditor({
     element,
+    onDelete: deleteElement,
     updateVisibilityForElement,
 }: ElementEditorProps) {
     const classNames = [
@@ -28,23 +30,31 @@ function ElementEditor({
         event.stopPropagation();
     }
 
+    const handleDelete = () => {
+        const confirmation = confirm("Are you sure you want to delete this element?");
+        if (!confirmation) {
+            return;
+        }
+        deleteElement();
+    }
+
     return (
-        <div className={classNames.join(" ")} onClick={handleClick}>
-            <ElementIcon icon={element.icon} clickable={false} />
-            {element.name &&
-                <div className="element-name">
-                    <span>
-                        {element.name}
-                    </span>
+            <div className={classNames.join(" ")} onClick={handleClick}>
+                <div className="element-editor-label">
+                    {element.icon !== "none" && <ElementIcon icon={element.icon} clickable={false} />}
+                    {element.name && <div className="element-name">{element.name}</div>}
+                </div>
+                <div className="element-editor-options">
                     {
                         element.link !== "" &&
                         <a onClick={stopPropagation} href={element.link} target="_blank">
-                            <button className="element-link">Visit</button>
+                            <button>Visit</button>
                         </a>
                     }
+                    <button onClick={handleDelete}>Delete</button>
                 </div>
-            }
-        </div>
+            </div>
+
     );
 }
 
