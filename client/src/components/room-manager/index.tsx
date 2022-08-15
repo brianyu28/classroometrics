@@ -1,3 +1,5 @@
+import useWebSocket from "react-use-websocket";
+
 import { getTeacherRoomByIdentifier, updateRoom } from "crmet/api/RoomClient";
 import UserAuthContext from "crmet/contexts/UserAuthContext";
 import { Error } from "crmet/data/Error";
@@ -5,15 +7,29 @@ import { Element, Room } from "crmet/data/Room";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomEditor from "../room-editor";
+import { getTeacherWebsocketURL } from "crmet/api/WebsocketClient";
 
 function RoomManager() {
     const navigate = useNavigate();
     const params = useParams();
     const { userAuth } = useContext(UserAuthContext);
 
-    const [room, setRoom] = useState<Room | null>(null);
-
     const roomIdentifier = params.roomIdentifier;
+
+    const [room, setRoom] = useState<Room | null>(null);
+    const {sendJsonMessage, lastJsonMessage} = useWebSocket(
+        room !== null ? getTeacherWebsocketURL(room.id) : null
+    );
+
+    useEffect(() => {
+        if (lastJsonMessage === null) {
+            return;
+        }
+
+        if ((lastJsonMessage as any).type === "event_room_update") {
+            setRoom((lastJsonMessage as any).room);
+        }
+    }, [lastJsonMessage]);
 
     const reloadRoom = () => {
         getTeacherRoomByIdentifier(userAuth, roomIdentifier)

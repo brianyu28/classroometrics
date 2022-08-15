@@ -143,6 +143,10 @@ class RoomService:
             room.id,
             RoomService.serialize_room(room, visible_only=True)
         )
+        WebsocketService.broadcast_updated_room_to_teachers(
+            room.id,
+            RoomService.serialize_room(room, visible_only=False)
+        )
 
     @staticmethod
     def update_room(room: Room, updated_room: dict, broadcast: bool = True):

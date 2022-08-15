@@ -40,3 +40,21 @@ class WebsocketService:
                 "room": serialized_room
             }
         )
+
+    @staticmethod
+    def broadcast_updated_room_to_teachers(room_id: int, serialized_room: dict):
+        """
+        Broadcast to teachers that a room has been updated.
+
+        Arguments:
+            room_id: int -- Room ID
+            serialized_room: dict -- Serialized room to broadcast
+        """
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            WebsocketService.get_teacher_group_name_for_room_id(room_id),
+            {
+                "type": "event_room_update",
+                "room": serialized_room
+            }
+        )
