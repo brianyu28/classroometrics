@@ -27,6 +27,7 @@ function ElementGroupEditor({
 
     // Custom style when reordering list
     const getListStyle = (isDraggingOver: boolean) => ({
+        paddingBottom: isDraggingOver ? '10px' : '0px'
     });
     const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
         ...draggableStyle,
@@ -43,6 +44,10 @@ function ElementGroupEditor({
         // Dropped outside the list.
         if (!result.destination) {
           return;
+        }
+
+        if (result.source.index === result.destination.index) {
+            return;
         }
 
         const newGroup = reorder(

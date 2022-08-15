@@ -49,6 +49,7 @@ function RoomManager() {
                 }))
             ))
         };
+        setRoom(updatedRoom);
         saveUpdatedRoom(updatedRoom);
     }
 
@@ -72,6 +73,7 @@ function RoomManager() {
             ...room,
             groups: room.groups.map(group => group.filter(element => element.id !== elementId))
         };
+        setRoom(updatedRoom);
         saveUpdatedRoom(updatedRoom);
     }
 
@@ -80,6 +82,7 @@ function RoomManager() {
             ...room,
             groups: room.groups.map((group, index) => index === groupIndex ? updatedGroup : group)
         };
+        setRoom(updatedRoom);
         saveUpdatedRoom(updatedRoom);
     }
 

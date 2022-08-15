@@ -1,6 +1,7 @@
 from typing import List
 from core.models import Element, Room, User
 from core.services.element_service import ElementService
+from core.services.websocket_service import WebsocketService
 
 class RoomException(Exception):
     pass
@@ -131,13 +132,29 @@ class RoomService:
         return room.serialize(visible_only=visible_only)
 
     @staticmethod
-    def update_room(room: Room, updated_room: dict):
+    def broadcast_update(room: Room):
+        """
+        Broadcast update to room to student listeners.
+
+        Arguments:
+            room: Room -- Room update to broadcast
+        """
+        WebsocketService.broadcast_updated_room_to_students(
+            room.id,
+            RoomService.serialize_room(room, visible_only=True)
+        )
+
+    @staticmethod
+    def update_room(room: Room, updated_room: dict, broadcast: bool = True):
         """
         Update a room based on a request body.
 
         Arguments:
             room: Room - The room to update
             updated_room: dict - Updated room, in serialized form
+
+        Optional arguments:
+            broadcast: bool -- Whether to broadcast to websocket listeners, default True
         """
         if "title" in updated_room:
             room.title = updated_room["title"]
@@ -177,3 +194,6 @@ class RoomService:
             for element_id in element_map:
                 element = element_map[element_id]
                 ElementService.delete_element(element)
+
+        if broadcast:
+            RoomService.broadcast_update(room)

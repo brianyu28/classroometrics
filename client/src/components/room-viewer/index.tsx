@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import useWebSocket from "react-use-websocket";
+
 import { getRoomForStudent } from "crmet/api/RoomClient";
 import { Room } from "crmet/data/Room";
 import { Error } from "crmet/data/Error";
 import MajorElementsViewer from "crmet/components/major-elements-viewer";
-import { useEffect, useState } from "react";
-import MinorElementsViewer from "../minor-elements-viewer";
+import MinorElementsViewer from "crmet/components/minor-elements-viewer";
+import { getStudentWebsocketURL } from "crmet/api/WebsocketClient";
 
 interface RoomViewerProps {
     id: number | null
@@ -14,6 +17,17 @@ function RoomViewer({
 }: RoomViewerProps) {
 
     const [room, setRoom] = useState<Room | null>(null);
+
+    const {sendJsonMessage, lastJsonMessage} = useWebSocket(getStudentWebsocketURL(id));
+
+    useEffect(() => {
+        if (lastJsonMessage === null) {
+            return;
+        }
+        if ((lastJsonMessage as any).type === "event_room_update") {
+            setRoom((lastJsonMessage as any).room);
+        }
+    }, [lastJsonMessage]);
 
     const reloadRoom = () => {
         if (id === null) {
