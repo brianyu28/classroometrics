@@ -36,7 +36,7 @@ export function usePersistentState<T>(defaultValue: T, key: string): [T, (value:
  */
 export function useBooleanState(defaultValue: boolean): [boolean, () => void] {
     const [value, setValue] = useState(defaultValue);
-    const toggleValue = () => setValue(!value);
+    const toggleValue = () => setValue(value => !value);
     return [value, toggleValue];
 }
 

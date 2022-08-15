@@ -10,8 +10,10 @@ import RoomEditor from "../room-editor";
 import { getTeacherWebsocketURL } from "crmet/api/WebsocketClient";
 import RoomActivity from "../room-activity";
 import { ElementActivity } from "crmet/data/ElementActivity";
-import { useRoom } from "crmet/util/hooks";
+import { useBooleanState, useRoom } from "crmet/util/hooks";
 import { getCurrentTimestamp } from "crmet/util/dates";
+
+const ACTIVITY_LIFESPAN_SECONDS = 4;
 
 function RoomManager() {
     const navigate = useNavigate();
@@ -25,6 +27,15 @@ function RoomManager() {
     const {sendJsonMessage, lastJsonMessage} = useWebSocket(
         room !== null ? getTeacherWebsocketURL(room.id) : null
     );
+    const [isShowingActivityView, toggleIsShowingActivityView] = useBooleanState(false);
+    const [isInBatchToggleMode, toggleIsInBatchToggleMode] = useBooleanState(false);
+
+    const removeExpiredElementActivity = () => {
+        const timestamp = getCurrentTimestamp();
+        setElementActivity(elementActivity => elementActivity.filter(activity =>
+            timestamp - activity.timestamp < ACTIVITY_LIFESPAN_SECONDS
+        ));
+    };
 
     useEffect(() => {
         if (lastJsonMessage === null) {
@@ -39,7 +50,7 @@ function RoomManager() {
                 return;
             }
             const element = elementMap[elementId];
-            setElementActivity([
+            setElementActivity(elementActivity => [
                 ...elementActivity,
                 {
                     element,
@@ -47,7 +58,11 @@ function RoomManager() {
                     y: Math.random(),
                     timestamp: getCurrentTimestamp(),
                 }
-            ])
+            ]);
+            setTimeout(
+                removeExpiredElementActivity,
+                ACTIVITY_LIFESPAN_SECONDS * 1000
+            );
         }
 
     }, [lastJsonMessage]);
@@ -87,7 +102,9 @@ function RoomManager() {
             ))
         };
         setRoom(updatedRoom);
-        saveUpdatedRoom(updatedRoom);
+        if (!isInBatchToggleMode) {
+            saveUpdatedRoom(updatedRoom);
+        }
     }
 
     const addElementToGroup = (element: Element, groupIndex: number) => {
@@ -123,33 +140,47 @@ function RoomManager() {
         saveUpdatedRoom(updatedRoom);
     }
 
+    const submitBatchToggle = () => {
+        saveUpdatedRoom(room);
+        toggleIsInBatchToggleMode();
+    }
+
     useEffect(reloadRoom, [userAuth, roomIdentifier])
 
     const navigateToAllRooms = () => {
         navigate("/app/rooms/");
     }
 
+    if (isShowingActivityView) {
+        return (
+            <div>
+                <RoomActivity
+                    elementActivity={elementActivity}
+                    toggleIsShowingActivityView={toggleIsShowingActivityView}
+                />
+            </div>
+        );
+    }
+
     return (
         <div>
             <h2>Room{room !== null && `: ${room.title}` }</h2>
             <div>
-                <button>Activity</button>
-                <button>Batch Toggle</button>
+                <button onClick={toggleIsShowingActivityView}>Activity View</button>
+                {!isInBatchToggleMode ?
+                 <button onClick={toggleIsInBatchToggleMode}>Start Batch Toggle</button> :
+                 <button onClick={submitBatchToggle}>Submit Batch Toggle</button>
+                }
                 <button onClick={navigateToAllRooms}>All Rooms</button>
             </div>
             {room !== null &&
-                <>
-                    <RoomEditor
-                        room={room}
-                        addElementToGroup={addElementToGroup}
-                        deleteElement={deleteElement}
-                        updateGroup={updateGroup}
-                        updateVisibilityForElement={updateVisibilityForElement}
-                    />
-                    <RoomActivity
-                        elementActivity={elementActivity}
-                    />
-                </>
+                <RoomEditor
+                    room={room}
+                    addElementToGroup={addElementToGroup}
+                    deleteElement={deleteElement}
+                    updateGroup={updateGroup}
+                    updateVisibilityForElement={updateVisibilityForElement}
+                />
             }
         </div>
     );
