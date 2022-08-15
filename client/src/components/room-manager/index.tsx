@@ -8,6 +8,10 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import RoomEditor from "../room-editor";
 import { getTeacherWebsocketURL } from "crmet/api/WebsocketClient";
+import RoomActivity from "../room-activity";
+import { ElementActivity } from "crmet/data/ElementActivity";
+import { useRoom } from "crmet/util/hooks";
+import { getCurrentTimestamp } from "crmet/util/dates";
 
 function RoomManager() {
     const navigate = useNavigate();
@@ -16,7 +20,8 @@ function RoomManager() {
 
     const roomIdentifier = params.roomIdentifier;
 
-    const [room, setRoom] = useState<Room | null>(null);
+    const [room, setRoom, elementMap] = useRoom();
+    const [elementActivity, setElementActivity] = useState<ElementActivity[]>([]);
     const {sendJsonMessage, lastJsonMessage} = useWebSocket(
         room !== null ? getTeacherWebsocketURL(room.id) : null
     );
@@ -28,7 +33,23 @@ function RoomManager() {
 
         if ((lastJsonMessage as any).type === "event_room_update") {
             setRoom((lastJsonMessage as any).room);
+        } else if ((lastJsonMessage as any).type == "event_element_activity") {
+            const elementId = (lastJsonMessage as any).element_id;
+            if (!(elementId in elementMap)) {
+                return;
+            }
+            const element = elementMap[elementId];
+            setElementActivity([
+                ...elementActivity,
+                {
+                    element,
+                    x: Math.random(),
+                    y: Math.random(),
+                    timestamp: getCurrentTimestamp(),
+                }
+            ])
         }
+
     }, [lastJsonMessage]);
 
     const reloadRoom = () => {
@@ -112,19 +133,23 @@ function RoomManager() {
         <div>
             <h2>Room{room !== null && `: ${room.title}` }</h2>
             <div>
-                <button>Metrics</button>
-                <button>Edit</button>
                 <button>Activity</button>
+                <button>Batch Toggle</button>
                 <button onClick={navigateToAllRooms}>All Rooms</button>
             </div>
             {room !== null &&
-                <RoomEditor
-                    room={room}
-                    addElementToGroup={addElementToGroup}
-                    deleteElement={deleteElement}
-                    updateGroup={updateGroup}
-                    updateVisibilityForElement={updateVisibilityForElement}
-                />
+                <>
+                    <RoomEditor
+                        room={room}
+                        addElementToGroup={addElementToGroup}
+                        deleteElement={deleteElement}
+                        updateGroup={updateGroup}
+                        updateVisibilityForElement={updateVisibilityForElement}
+                    />
+                    <RoomActivity
+                        elementActivity={elementActivity}
+                    />
+                </>
             }
         </div>
     );

@@ -26,7 +26,7 @@ class TeacherConsumer(WebsocketConsumer):
         )
         self.accept()
 
-    def disconnect(self):
+    def disconnect(self, close_code):
         async_to_sync(self.channel_layer.group_discard)(
             self.group_name,
             self.channel_name
@@ -37,4 +37,11 @@ class TeacherConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             "type": "event_room_update",
             "room": room,
+        }))
+
+    def event_element_activity(self, event):
+        element_id = event["element_id"]
+        self.send(text_data=json.dumps({
+            "type": "event_element_activity",
+            "element_id": element_id,
         }))

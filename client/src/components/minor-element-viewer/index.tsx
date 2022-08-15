@@ -6,12 +6,14 @@ interface MinorElementViewerProps {
     clickable: boolean;
     icon: string;
     name: string;
+    submitElementActivity: () => void;
 }
 
 function MinorElementViewer({
     clickable,
     icon,
     name,
+    submitElementActivity,
 }: MinorElementViewerProps) {
     const style = ({} as any);
     if (clickable) {
@@ -20,7 +22,7 @@ function MinorElementViewer({
     const className = clickable ? "minor-element-viewer minor-element-viewer-clickable" : "minor-element-viewer";
 
     return (
-        <div className={className} style={style}>
+        <div className={className} style={style} onClick={submitElementActivity}>
             <ElementIcon icon={icon} clickable={false} />
             <div>
                 {name}

@@ -5,10 +5,12 @@ import './style.scss';
 
 interface MinorElementsViewerProps {
     elements: Element[];
+    submitElementActivity: (element: Element) => void;
 }
 
 function MinorElementsViewer({
-    elements
+    elements,
+    submitElementActivity,
 }: MinorElementsViewerProps) {
     return (
         <div className='minor-elements-viewer'>
@@ -22,6 +24,7 @@ function MinorElementsViewer({
                         clickable={true}
                         icon={element.icon}
                         name={element.name}
+                        submitElementActivity={() => submitElementActivity(element)}
                     />
                 );
             })}

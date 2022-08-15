@@ -1,4 +1,5 @@
 import { logout, me } from "crmet/api/AuthenticationClient";
+import { Room } from "crmet/data/Room";
 import { UserAuthentication } from "crmet/data/User";
 import React, { Ref, useEffect, useState } from "react";
 import { useRef } from "react"
@@ -94,3 +95,34 @@ export function useUserAuth():
     return [userAuth, setUserAuth, isLoading, handleLogout];
 }
 
+/**
+ * Use state for storing a room, and also get acccess to an element map mapping element IDs to elements
+ */
+export function useRoom():
+    [
+        Room | null,
+        (room: Room | null) => void,
+        any,
+    ]
+{
+    // State contains two elements
+    // First is the room itself (Room | null)
+    // Second is the element map, mapping element IDs to elements
+    const [state, setState] = useState<[Room | null, any]>([null, {}]);
+
+    const updateRoom = (newRoom: Room | null) => {
+        if (newRoom === null) {
+            setState([null, {}]);
+        }
+        const newElementMap : any = {};
+        for (const group of newRoom.groups) {
+            for (const element of group) {
+                newElementMap[element.id] = element;
+            }
+        }
+        setState([newRoom, newElementMap]);
+    }
+
+    const [room, elementMap] = state;
+    return [room, updateRoom, elementMap];
+}

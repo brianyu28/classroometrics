@@ -58,3 +58,21 @@ class WebsocketService:
                 "room": serialized_room
             }
         )
+
+    @staticmethod
+    def broadcast_element_activity(room_id: int, element_id: int):
+        """
+        Broadcast element activity to teacher accounts.
+
+        Arguments:
+            room_id: int -- Room ID
+            element_id: int -- Element ID of element activity
+        """
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            WebsocketService.get_teacher_group_name_for_room_id(room_id),
+            {
+                "type": "event_element_activity",
+                "element_id": element_id,
+            }
+        )

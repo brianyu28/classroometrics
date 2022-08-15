@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useWebSocket from "react-use-websocket";
 
 import { getRoomForStudent } from "crmet/api/RoomClient";
-import { Room } from "crmet/data/Room";
+import { Element, Room } from "crmet/data/Room";
 import { Error } from "crmet/data/Error";
 import MajorElementsViewer from "crmet/components/major-elements-viewer";
 import MinorElementsViewer from "crmet/components/minor-elements-viewer";
@@ -28,6 +28,13 @@ function RoomViewer({
             setRoom((lastJsonMessage as any).room);
         }
     }, [lastJsonMessage]);
+
+    const submitElementActivity = (element: Element) => {
+        sendJsonMessage({
+            type: "event_element_activity",
+            element: element as any,
+        });
+    };
 
     const reloadRoom = () => {
         if (id === null) {
@@ -64,7 +71,8 @@ function RoomViewer({
         <div>
             {room.groups.length > 0 &&
                 <MajorElementsViewer
-                elements={room.groups[0]}
+                    elements={room.groups[0]}
+                    submitElementActivity={submitElementActivity}
                 />
             }
             {room.groups.length > 1 &&
@@ -72,6 +80,7 @@ function RoomViewer({
                 <MinorElementsViewer
                     key={i}
                     elements={group}
+                    submitElementActivity={submitElementActivity}
                 />
                 ))
             }
