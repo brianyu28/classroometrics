@@ -11,17 +11,17 @@ class ElementService:
         for element in room.elements.all():
             element.delete()
         default_elements = [
-            Element(icon="sentiment.negative", identifier="sentiment.negative", name="", section=0, order=0, is_visible=True),
-            Element(icon="sentiment.neutral", identifier="sentiment.neutral", name="", section=0, order=1, is_visible=True),
-            Element(icon="sentiment.positive", identifier="sentiment.positive", name="", section=0, order=2, is_visible=True),
+            Element(icon="sentiment.negative", name="", section=0, order=0, is_visible=True),
+            Element(icon="sentiment.neutral", name="", section=0, order=1, is_visible=True),
+            Element(icon="sentiment.positive", name="", section=0, order=2, is_visible=True),
 
-            Element(icon="completion.no", identifier="completion.no", name="", section=0, order=3, is_visible=False),
-            Element(icon="completion.yes", identifier="completion.yes", name="", section=0, order=4, is_visible=False),
+            Element(icon="completion.no", name="", section=0, order=3, is_visible=False),
+            Element(icon="completion.yes", name="", section=0, order=4, is_visible=False),
 
-            Element(icon="pace.slower", identifier="pace.slower", name="Slower", section=1, order=0, is_visible=False),
-            Element(icon="pace.faster", identifier="pace.faster", name="Faster", section=1, order=1, is_visible=False),
+            Element(icon="pace.slower", name="Slower", section=1, order=0, is_visible=False),
+            Element(icon="pace.faster", name="Faster", section=1, order=1, is_visible=False),
 
-            Element(icon="link", identifier="link.google", name="Google", section=2, order=0, is_visible=False, link="https://google.com/"),
+            Element(icon="link", name="Google", section=2, order=0, is_visible=False, link="https://google.com/"),
         ]
         for element in default_elements:
             element.room = room
@@ -69,7 +69,7 @@ class ElementService:
             element: Element -- Element to update
             updates: dict -- Serialized update dictionary
         """
-        fields = ["icon", "identifier", "name", "section", "order", "is_visible", "link"]
+        fields = ["icon", "name", "section", "order", "is_visible", "link"]
         for field in fields:
             if field in updates:
                 setattr(element, field, updates[field])
@@ -85,7 +85,6 @@ class ElementService:
             properties: dict -- Dictionary of properties for element
         """
         icon = properties.get("icon")
-        identifier = properties.get("identifier")
         name = properties.get("name")
         section = properties.get("section")
         order = properties.get("order")
@@ -95,7 +94,6 @@ class ElementService:
         element = Element(
             room=room,
             icon=icon if type(icon) == str else "",
-            identifier=identifier if type(identifier) == str else "",
             name=name if type(name) == str else "",
             section=section if type(section) == int else 1,
             order=order if type(order) == int else 0,

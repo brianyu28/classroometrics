@@ -56,7 +56,6 @@ class Room(models.Model):
 class Element(models.Model):
     room = models.ForeignKey("Room", on_delete=models.CASCADE, related_name="elements")
     icon = models.CharField(max_length=200)
-    identifier = models.CharField(max_length=200)
     name = models.CharField(max_length=200, blank=True)
     section = models.IntegerField()
     order = models.IntegerField()
@@ -71,7 +70,6 @@ class Element(models.Model):
             "id": self.id,
             "room_id": self.room.id,
             "icon": self.icon,
-            "identifier": self.identifier,
             "name": self.name,
             "section": self.section,
             "order": self.order,

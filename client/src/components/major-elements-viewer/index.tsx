@@ -22,6 +22,7 @@ function MajorElementsViewer({
                     <MajorElementViewer
                         key={element.id}
                         icon={element.icon}
+                        link={element.link}
                         submitElementActivity={() => submitElementActivity(element)}
                     />
                 );

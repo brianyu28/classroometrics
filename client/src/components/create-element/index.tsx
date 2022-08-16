@@ -29,7 +29,6 @@ function CreateElement({
         const element = {
             room_id: roomId,
             icon,
-            identifier: "",
             name,
             section: groupIndex,
             order: 0, // Unused, will be overriden based on ordering in group array

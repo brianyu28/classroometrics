@@ -24,6 +24,7 @@ function MinorElementsViewer({
                         clickable={true}
                         icon={element.icon}
                         name={element.name}
+                        link={element.link}
                         submitElementActivity={() => submitElementActivity(element)}
                     />
                 );
