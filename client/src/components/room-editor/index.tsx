@@ -9,9 +9,11 @@ import "./style.scss";
 
 interface RoomEditorProps {
     room: Room;
+    elementCounts: any;
     questions: string[];
     questionsVisible: boolean;
     questionsEnabled: boolean;
+    showEditButtons: boolean;
     removeQuestionAtIndex: (index: number) => void;
     addElementToGroup: (element: Element, groupIndex: number) => void;
     deleteElement: (elementId: number) => void;
@@ -21,9 +23,11 @@ interface RoomEditorProps {
 
 function RoomEditor({
     room,
+    elementCounts,
     questions,
     questionsVisible,
     questionsEnabled,
+    showEditButtons,
     removeQuestionAtIndex,
     addElementToGroup,
     deleteElement,
@@ -50,14 +54,16 @@ function RoomEditor({
                         removeQuestionAtIndex={removeQuestionAtIndex}
                     />
                 }
-                {([...room.groups, []]).map((group, group_number) => (
+                {(showEditButtons ? [...room.groups, []] : room.groups).map((group, group_number) => (
                     <ElementGroupEditor
                         key={group_number}
                         group={group}
+                        elementCounts={elementCounts}
                         deleteElement={deleteElement}
                         updateGroup={(group: Element[]) => updateGroup(group_number, group)}
                         updateVisibilityForElement={updateVisibilityForElement}
-                        shouldShowAddButton={createRoomViewGroup === null}
+                        shouldShowAddButton={createRoomViewGroup === null && showEditButtons}
+                        shouldShowDeleteButton={showEditButtons}
                         toggleCreateRoomViewOpen={() => setCreateRoomViewGroup(group_number)}
                     />
                 ))}

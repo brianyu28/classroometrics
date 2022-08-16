@@ -6,19 +6,23 @@ import "./style.scss";
 
 interface ElementGroupEditorProps {
     group: Element[];
+    elementCounts: any;
     deleteElement: (elementId: number) => void;
     updateGroup: (group: Element[]) => void;
     updateVisibilityForElement: (elementId: number, isVisible: boolean) => void;
     shouldShowAddButton: boolean;
+    shouldShowDeleteButton: boolean;
     toggleCreateRoomViewOpen: () => void;
 }
 
 function ElementGroupEditor({
     group,
+    elementCounts,
     deleteElement,
     updateGroup,
     updateVisibilityForElement,
     shouldShowAddButton,
+    shouldShowDeleteButton,
     toggleCreateRoomViewOpen,
 }: ElementGroupEditorProps) {
     const classNames = [
@@ -84,8 +88,10 @@ function ElementGroupEditor({
                                   >
                                     <ElementEditor
                                         key={element.id}
+                                        count={elementCounts[element.id] || 0}
                                         element={element}
                                         onDelete={() => deleteElement(element.id)}
+                                        shouldShowDeleteButton={shouldShowDeleteButton}
                                         updateVisibilityForElement={updateVisibilityForElement}
                                     />
                                   </div>

@@ -11,7 +11,7 @@ import RoomEditor from "../room-editor";
 import { getTeacherWebsocketURL } from "crmet/api/WebsocketClient";
 import RoomActivity from "../room-activity";
 import { ElementActivity } from "crmet/data/ElementActivity";
-import { useBooleanState, useRoom } from "crmet/util/hooks";
+import { useBooleanState, usePersistentBooleanState, useRoom } from "crmet/util/hooks";
 import { getCurrentTimestamp } from "crmet/util/dates";
 import QuestionManager from "../question-manager";
 
@@ -30,9 +30,12 @@ function RoomManager() {
     const {sendJsonMessage, lastJsonMessage} = useWebSocket(
         room !== null ? getTeacherWebsocketURL(room.id) : null
     );
+    const [elementCounts, setElementCounts] = useState<any>({});
+
     const [isShowingActivityView, toggleIsShowingActivityView] = useBooleanState(false);
     const [isInBatchToggleMode, toggleIsInBatchToggleMode] = useBooleanState(false);
     const [questionsVisible, toggleQuestionsVisible] = useBooleanState(true);
+    const [showEditButtons, toggleEditButtons] = usePersistentBooleanState(true, "crmet_room_show_edit_buttons");
 
     const removeExpiredElementActivity = () => {
         const timestamp = getCurrentTimestamp();
@@ -57,6 +60,8 @@ function RoomManager() {
                 return;
             }
             const element = elementMap[elementId];
+
+            // Add element to activity
             setElementActivity(elementActivity => [
                 ...elementActivity,
                 {
@@ -70,6 +75,12 @@ function RoomManager() {
                 removeExpiredElementActivity,
                 ACTIVITY_LIFESPAN_SECONDS * 1000
             );
+
+            // Add to element counts
+            setElementCounts((counts: any) => ({
+                 ...counts,
+                 [elementId]: elementId in counts ? counts[elementId] + 1 : 1
+            }));
         } else if ((lastJsonMessage as any).type == "event_question") {
             const question = (lastJsonMessage as any).question;
             setQuestions(questions => [...questions, question]);
@@ -184,7 +195,8 @@ function RoomManager() {
     useHotkeys('q', toggleQuestionsVisible);
     useHotkeys('a', toggleIsShowingActivityView);
     useHotkeys('b', switchBatchToggle, [room, isInBatchToggleMode]);
-    useHotkeys('e', toggleQuestionsEnabled, [room]);
+    useHotkeys('d', toggleQuestionsEnabled, [room]);
+    useHotkeys('e', toggleEditButtons);
 
     if (isShowingActivityView) {
         return (
@@ -228,14 +240,22 @@ function RoomManager() {
                         Show student questions?
                     </label>
                 </div>
+                <div>
+                    <label>
+                        <input type="checkbox" checked={showEditButtons} onChange={toggleEditButtons}></input>
+                        Show edit buttons?
+                    </label>
+                </div>
             </div>
             {room !== null &&
                 <RoomEditor
                     room={room}
+                    elementCounts={elementCounts}
                     questions={questions}
                     questionsVisible={questionsVisible}
                     questionsEnabled={questionsEnabled}
                     removeQuestionAtIndex={removeQuestionAtIndex}
+                    showEditButtons={showEditButtons}
                     addElementToGroup={addElementToGroup}
                     deleteElement={deleteElement}
                     updateGroup={updateGroup}

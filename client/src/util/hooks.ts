@@ -18,7 +18,7 @@ export function useFocus(): [Ref<any>, Function] {
 /**
  * Hook to persist state in local storage.
  */
-export function usePersistentState<T>(defaultValue: T, key: string): [T, (value: T) => void] {
+export function usePersistentState<T>(defaultValue: T, key: string): [T, (value: any) => void] {
     const [value, setValue] = useState(() => {
         const storageValue = window.localStorage.getItem(key);
         return storageValue !== null ? JSON.parse(storageValue) : defaultValue;
@@ -37,6 +37,12 @@ export function usePersistentState<T>(defaultValue: T, key: string): [T, (value:
 export function useBooleanState(defaultValue: boolean): [boolean, () => void] {
     const [value, setValue] = useState(defaultValue);
     const toggleValue = () => setValue(value => !value);
+    return [value, toggleValue];
+}
+
+export function usePersistentBooleanState(defaultValue: boolean, key: string): [T, () => void] {
+    const [value, setValue] = usePersistentState(defaultValue, key);
+    const toggleValue = () => setValue((value: boolean) => !value);
     return [value, toggleValue];
 }
 

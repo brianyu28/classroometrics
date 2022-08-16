@@ -6,12 +6,16 @@ import "./style.scss";
 
 interface ElementEditorProps {
     element: Element;
+    count: number;
+    shouldShowDeleteButton: boolean;
     onDelete: () => void;
     updateVisibilityForElement: (elementId: number, isVisible: boolean) => void;
 }
 
 function ElementEditor({
     element,
+    count,
+    shouldShowDeleteButton,
     onDelete: deleteElement,
     updateVisibilityForElement,
 }: ElementEditorProps) {
@@ -52,7 +56,10 @@ function ElementEditor({
                             <button>Visit</button>
                         </a>
                     }
-                    <button onClick={handleDelete}>Delete</button>
+                    {shouldShowDeleteButton && <button onClick={handleDelete}>Delete</button>}
+                </div>
+                <div className="element-editor-options">
+                    {count}
                 </div>
             </div>
 
