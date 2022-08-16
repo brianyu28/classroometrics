@@ -13,8 +13,8 @@ function QuestionManager({
 }: QuestionManagerProps) {
     return (
         <div className="question-manager">
-            <h2>Questions</h2>
-            {!questionsEnabled && <p style={{color: "red"}}>Questions disabled.</p>}
+            <h2>Responses</h2>
+            {!questionsEnabled && <p style={{color: "red"}}>Responses disabled.</p>}
             {questions.map((question, i) => (
                 <div key={i} className="question-editor">
                     {question}

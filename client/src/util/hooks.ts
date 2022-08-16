@@ -40,7 +40,7 @@ export function useBooleanState(defaultValue: boolean): [boolean, () => void] {
     return [value, toggleValue];
 }
 
-export function usePersistentBooleanState(defaultValue: boolean, key: string): [T, () => void] {
+export function usePersistentBooleanState(defaultValue: boolean, key: string): [boolean, () => void] {
     const [value, setValue] = usePersistentState(defaultValue, key);
     const toggleValue = () => setValue((value: boolean) => !value);
     return [value, toggleValue];

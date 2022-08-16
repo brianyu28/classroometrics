@@ -225,19 +225,19 @@ function RoomManager() {
                 <div>
                     <label>
                         <input type="checkbox" checked={questionsEnabled} onChange={toggleQuestionsEnabled}></input>
-                        Questions enabled?
+                        Responses enabled?
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" checked={questionsVisible} onChange={toggleQuestionsVisible}></input>
+                        Show student responses?
                     </label>
                 </div>
                 <div>
                     <label>
                         <input type="checkbox" checked={isInBatchToggleMode} onChange={switchBatchToggle}></input>
                         Hold visibility changes?
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        <input type="checkbox" checked={questionsVisible} onChange={toggleQuestionsVisible}></input>
-                        Show student questions?
                     </label>
                 </div>
                 <div>
