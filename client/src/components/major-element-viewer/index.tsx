@@ -16,7 +16,7 @@ function MajorElementViewer({
 
     const handleClick = () => {
         submitElementActivity();
-        if (link !== null) {
+        if (link !== "") {
             window.open(link, "_blank");
         }
     }

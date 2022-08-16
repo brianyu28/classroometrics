@@ -160,8 +160,20 @@ class RoomService:
         Optional arguments:
             broadcast: bool -- Whether to broadcast to websocket listeners, default True
         """
-        if "title" in updated_room:
+        room_needs_saving = False
+
+        if "title" in updated_room and updated_room["title"] != room.title:
             room.title = updated_room["title"]
+            room_needs_saving = True
+
+        if ("questions_enabled" in updated_room
+            and type(updated_room["questions_enabled"]) == bool
+            and updated_room["questions_enabled"] != room.questions_enabled
+        ):
+            room.questions_enabled = updated_room["questions_enabled"]
+            room_needs_saving = True
+
+        if room_needs_saving:
             room.save()
 
         if "groups" in updated_room:

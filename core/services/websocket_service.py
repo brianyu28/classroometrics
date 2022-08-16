@@ -76,3 +76,21 @@ class WebsocketService:
                 "element_id": element_id,
             }
         )
+
+    @staticmethod
+    def broadcast_question(room_id: int, question: str):
+        """
+        Broadcast a new question to teacher accounts.
+
+        Arguments:
+            room_id: int -- Room ID
+            question: str - Question to broadcast
+        """
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            WebsocketService.get_teacher_group_name_for_room_id(room_id),
+            {
+                "type": "event_question",
+                "question": question,
+            }
+        )

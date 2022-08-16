@@ -31,6 +31,7 @@ class Room(models.Model):
     identifier = models.CharField(max_length=200, unique=True)
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="rooms")
     title = models.CharField(max_length=200, blank=True)
+    questions_enabled = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title} ({self.owner.username})"
@@ -49,6 +50,7 @@ class Room(models.Model):
             "identifier": self.identifier,
             "owner_id": self.owner.id,
             "title": self.title,
+            "questions_enabled": self.questions_enabled,
             "groups": groups,
         }
 

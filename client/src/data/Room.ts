@@ -14,5 +14,6 @@ export interface Room {
     identifier: string,
     owner_id: number,
     title: string,
+    questions_enabled: boolean,
     groups: Element[][],
 }

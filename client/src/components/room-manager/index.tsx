@@ -1,17 +1,19 @@
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import useWebSocket from "react-use-websocket";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import { getTeacherRoomByIdentifier, updateRoom } from "crmet/api/RoomClient";
 import UserAuthContext from "crmet/contexts/UserAuthContext";
 import { Error } from "crmet/data/Error";
 import { Element, Room } from "crmet/data/Room";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import RoomEditor from "../room-editor";
 import { getTeacherWebsocketURL } from "crmet/api/WebsocketClient";
 import RoomActivity from "../room-activity";
 import { ElementActivity } from "crmet/data/ElementActivity";
 import { useBooleanState, useRoom } from "crmet/util/hooks";
 import { getCurrentTimestamp } from "crmet/util/dates";
+import QuestionManager from "../question-manager";
 
 const ACTIVITY_LIFESPAN_SECONDS = 4;
 
@@ -24,11 +26,13 @@ function RoomManager() {
 
     const [room, setRoom, elementMap] = useRoom();
     const [elementActivity, setElementActivity] = useState<ElementActivity[]>([]);
+    const [questions, setQuestions] = useState<string[]>([]);
     const {sendJsonMessage, lastJsonMessage} = useWebSocket(
         room !== null ? getTeacherWebsocketURL(room.id) : null
     );
     const [isShowingActivityView, toggleIsShowingActivityView] = useBooleanState(false);
     const [isInBatchToggleMode, toggleIsInBatchToggleMode] = useBooleanState(false);
+    const [questionsVisible, toggleQuestionsVisible] = useBooleanState(true);
 
     const removeExpiredElementActivity = () => {
         const timestamp = getCurrentTimestamp();
@@ -36,6 +40,9 @@ function RoomManager() {
             timestamp - activity.timestamp < ACTIVITY_LIFESPAN_SECONDS
         ));
     };
+
+
+    const questionsEnabled = room !== null && room.questions_enabled;
 
     useEffect(() => {
         if (lastJsonMessage === null) {
@@ -63,6 +70,9 @@ function RoomManager() {
                 removeExpiredElementActivity,
                 ACTIVITY_LIFESPAN_SECONDS * 1000
             );
+        } else if ((lastJsonMessage as any).type == "event_question") {
+            const question = (lastJsonMessage as any).question;
+            setQuestions(questions => [...questions, question]);
         }
 
     }, [lastJsonMessage]);
@@ -140,8 +150,28 @@ function RoomManager() {
         saveUpdatedRoom(updatedRoom);
     }
 
-    const submitBatchToggle = () => {
-        saveUpdatedRoom(room);
+    const toggleQuestionsEnabled = () => {
+        if (room === null) {
+            return;
+        }
+        const updatedRoom = {
+            ...room,
+            questions_enabled: !room.questions_enabled,
+        }
+        setRoom(updatedRoom);
+        saveUpdatedRoom(updatedRoom);
+    }
+
+    const removeQuestionAtIndex = (index: number) => {
+        setQuestions(questions =>
+            [...questions.slice(0, index), ...questions.slice(index + 1)]
+        )
+    }
+
+    const switchBatchToggle = () => {
+        if (isInBatchToggleMode) {
+            saveUpdatedRoom(room);
+        }
         toggleIsInBatchToggleMode();
     }
 
@@ -151,11 +181,21 @@ function RoomManager() {
         navigate("/app/rooms/");
     }
 
+    useHotkeys('q', toggleQuestionsVisible);
+    useHotkeys('a', toggleIsShowingActivityView);
+    useHotkeys('b', switchBatchToggle, [room, isInBatchToggleMode]);
+    useHotkeys('e', toggleQuestionsEnabled, [room]);
+
     if (isShowingActivityView) {
         return (
             <div>
                 <RoomActivity
                     elementActivity={elementActivity}
+                    questions={questions}
+                    questionsEnabled={questionsEnabled}
+                    questionsVisible={questionsVisible}
+                    toggleQuestionsVisible={toggleQuestionsVisible}
+                    removeQuestionAtIndex={removeQuestionAtIndex}
                     toggleIsShowingActivityView={toggleIsShowingActivityView}
                 />
             </div>
@@ -167,15 +207,35 @@ function RoomManager() {
             <h2>Room{room !== null && `: ${room.title}` }</h2>
             <div>
                 <button onClick={toggleIsShowingActivityView}>Activity View</button>
-                {!isInBatchToggleMode ?
-                 <button onClick={toggleIsInBatchToggleMode}>Start Batch Toggle</button> :
-                 <button onClick={submitBatchToggle}>Submit Batch Toggle</button>
-                }
                 <button onClick={navigateToAllRooms}>All Rooms</button>
+            </div>
+            <div>
+                <div>
+                    <label>
+                        <input type="checkbox" checked={questionsEnabled} onChange={toggleQuestionsEnabled}></input>
+                        Questions enabled?
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" checked={isInBatchToggleMode} onChange={switchBatchToggle}></input>
+                        Hold visibility changes?
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" checked={questionsVisible} onChange={toggleQuestionsVisible}></input>
+                        Show student questions?
+                    </label>
+                </div>
             </div>
             {room !== null &&
                 <RoomEditor
                     room={room}
+                    questions={questions}
+                    questionsVisible={questionsVisible}
+                    questionsEnabled={questionsEnabled}
+                    removeQuestionAtIndex={removeQuestionAtIndex}
                     addElementToGroup={addElementToGroup}
                     deleteElement={deleteElement}
                     updateGroup={updateGroup}

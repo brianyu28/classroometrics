@@ -3,11 +3,16 @@ import { useBooleanState } from "crmet/util/hooks";
 import { useState } from "react";
 import CreateElement from "../create-element";
 import ElementGroupEditor from "../element-group-editor";
+import QuestionManager from "../question-manager";
 
 import "./style.scss";
 
 interface RoomEditorProps {
     room: Room;
+    questions: string[];
+    questionsVisible: boolean;
+    questionsEnabled: boolean;
+    removeQuestionAtIndex: (index: number) => void;
     addElementToGroup: (element: Element, groupIndex: number) => void;
     deleteElement: (elementId: number) => void;
     updateGroup: (groupIndex: number, updatedGroup: Element[]) => void;
@@ -15,9 +20,13 @@ interface RoomEditorProps {
 }
 
 function RoomEditor({
+    room,
+    questions,
+    questionsVisible,
+    questionsEnabled,
+    removeQuestionAtIndex,
     addElementToGroup,
     deleteElement,
-    room,
     updateGroup,
     updateVisibilityForElement,
 }: RoomEditorProps) {
@@ -34,6 +43,13 @@ function RoomEditor({
     return (
         <div>
             <div className="room-editor">
+                {questionsVisible &&
+                    <QuestionManager
+                        questions={questions}
+                        questionsEnabled={questionsEnabled}
+                        removeQuestionAtIndex={removeQuestionAtIndex}
+                    />
+                }
                 {([...room.groups, []]).map((group, group_number) => (
                     <ElementGroupEditor
                         key={group_number}

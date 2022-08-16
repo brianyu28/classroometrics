@@ -4,16 +4,28 @@ import { ElementActivity } from "crmet/data/ElementActivity";
 import { getElementIcon } from "crmet/util/element-icon";
 
 import "./style.scss";
+import QuestionManager from "../question-manager";
 
 interface RoomActivityProps {
     elementActivity: ElementActivity[];
+    questions: string[];
+    questionsEnabled: boolean;
+    questionsVisible: boolean;
+    toggleQuestionsVisible: () => void;
+    removeQuestionAtIndex: (index: number) => void;
     toggleIsShowingActivityView: () => void;
 }
 
 function RoomActivity({
     elementActivity,
+    questions,
+    questionsEnabled,
+    questionsVisible,
+    toggleQuestionsVisible,
+    removeQuestionAtIndex,
     toggleIsShowingActivityView,
 }: RoomActivityProps) {
+
 
     // Use 'Escape' to get out of room activity view
     useHotkeys('esc', toggleIsShowingActivityView);
@@ -29,15 +41,26 @@ function RoomActivity({
     return (
         <div className="room-activity">
             {
-                elementActivity.map(activity =>
-                    <img
-                        key={activity.timestamp}
-                        src={getElementIcon(activity.element.icon)}
-                        style={getActivityStyle(activity) as any}
-                    />
-                )
+                questionsVisible &&
+                <QuestionManager
+                    questions={questions}
+                    questionsEnabled={questionsEnabled}
+                    removeQuestionAtIndex={removeQuestionAtIndex}
+                />
             }
+             <div className="room-activity-elements">
+                {
+                    elementActivity.map(activity =>
+                        <img
+                            key={activity.timestamp}
+                            src={getElementIcon(activity.element.icon)}
+                            style={getActivityStyle(activity) as any}
+                        />
+                    )
+                }
+            </div>
         </div>
+
     );
 }
 

@@ -45,3 +45,10 @@ class TeacherConsumer(WebsocketConsumer):
             "type": "event_element_activity",
             "element_id": element_id,
         }))
+
+    def event_question(self, event):
+        question = event["question"]
+        self.send(text_data=json.dumps({
+            "type": "event_question",
+            "question": question,
+        }))

@@ -29,6 +29,12 @@ class StudentConsumer(WebsocketConsumer):
             if element_id is None:
                 return
             WebsocketService.broadcast_element_activity(self.room_id, element_id)
+        elif data.get("type") == "event_question":
+            question = data.get("question")
+            if question is None:
+                return
+            WebsocketService.broadcast_question(self.room_id, question)
+
 
     def event_room_update(self, event):
         room = event["room"]

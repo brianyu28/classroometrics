@@ -7,6 +7,7 @@ import { Error } from "crmet/data/Error";
 import MajorElementsViewer from "crmet/components/major-elements-viewer";
 import MinorElementsViewer from "crmet/components/minor-elements-viewer";
 import { getStudentWebsocketURL } from "crmet/api/WebsocketClient";
+import QuestionPrompt from "../question-prompt";
 
 interface RoomViewerProps {
     id: number | null
@@ -33,6 +34,13 @@ function RoomViewer({
         sendJsonMessage({
             type: "event_element_activity",
             element: element as any,
+        });
+    };
+
+    const submitQuestion = (question: string) => {
+        sendJsonMessage({
+            type: "event_question",
+            question: question as any,
         });
     };
 
@@ -83,6 +91,11 @@ function RoomViewer({
                     submitElementActivity={submitElementActivity}
                 />
                 ))
+            }
+            {room.questions_enabled &&
+                <QuestionPrompt
+                    submitQuestion={submitQuestion}
+                />
             }
         </div>
     );

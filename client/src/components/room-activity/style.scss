@@ -1,4 +1,10 @@
 .room-activity {
-    height: 100vh;
-    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .room-activity-elements {
+        height: 100vh;
+        width: 100%;
+        position: relative;
+    }
 }
