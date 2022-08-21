@@ -89,6 +89,8 @@ def require_authentication(function: Callable) -> Callable:
         if user is not None:
             return function(user, request, *args, **kwargs)
         try:
+            if request.user.is_authenticated:
+                return function(request.user, request, *args, **kwargs)
             user = AuthenticationService.authenticate_user_from_request_headers(request)
         except AuthenticationException as e:
             return api_error(str(e))

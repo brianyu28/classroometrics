@@ -96,6 +96,9 @@ export function useUserAuth():
                 setIsLoading(false);
             }
         })
+        .catch(err => {
+            window.location.replace('/logout');
+        })
     }
 
     return [userAuth, setUserAuth, isLoading, handleLogout];

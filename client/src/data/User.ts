@@ -6,5 +6,4 @@ export interface User {
 export interface UserAuthentication {
     authenticated: boolean;
     user: User;
-    token: string;
 }

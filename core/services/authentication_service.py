@@ -117,11 +117,9 @@ class AuthenticationService:
         Returns:
             dict: User authentication data
         """
-        token = UserTokenService.get_or_create_user_token(user)
         return {
             "authenticated": True,
             "user": user.serialize(),
-            "token": token.token,
         }
 
     @staticmethod
