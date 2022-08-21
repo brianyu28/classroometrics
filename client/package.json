@@ -21,7 +21,8 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "format": "npx prettier --write ."
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +48,7 @@
     "@webpack-cli/generators": "^2.5.0",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "prettier": "2.7.1",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",

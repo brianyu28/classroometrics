@@ -1,46 +1,46 @@
 @import "~crmet/styles/CRMet";
 
 .element-editor {
-    border-radius: 10px;
-    background-color: $button-color;
-    cursor: pointer;
-    font-size: 24px;
-    margin: 10px;
-    padding: 10px;
+  border-radius: 10px;
+  background-color: $button-color;
+  cursor: pointer;
+  font-size: 24px;
+  margin: 10px;
+  padding: 10px;
 
-    .element-editor-label {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+  .element-editor-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .element-editor-options {
+    margin-top: 5px;
+    font-size: 12px;
+
+    button {
+      margin: 3px;
+      padding: 3px;
     }
+  }
 
-    .element-editor-options {
-        margin-top: 5px;
-        font-size: 12px;
+  &.element-not-visible {
+    filter: brightness(40%);
+  }
 
-        button {
-            margin: 3px;
-            padding: 3px;
-        }
+  .element-icon {
+    max-width: 50px;
+    max-height: 50px;
+  }
+
+  .element-name {
+    padding-left: 10px;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+
+    .element-link {
+      font-size: 12px;
     }
-
-    &.element-not-visible {
-        filter: brightness(40%);
-    }
-
-    .element-icon {
-        max-width: 50px;
-        max-height: 50px;
-    }
-
-    .element-name {
-        padding-left: 10px;
-        user-select: none;
-        display: flex;
-        flex-direction: column;
-
-        .element-link {
-            font-size: 12px;
-        }
-    }
+  }
 }

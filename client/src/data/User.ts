@@ -1,9 +1,9 @@
 export interface User {
-    id: number;
-    username: string;
+  id: number;
+  username: string;
 }
 
 export interface UserAuthentication {
-    authenticated: boolean;
-    user: User;
+  authenticated: boolean;
+  user: User;
 }

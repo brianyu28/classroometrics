@@ -1,18 +1,18 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist/",
-      "module": "es6",
-      "target": "es5",
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "module": "es6",
+    "target": "es5",
 
-      "paths": {
-        "crmet/*": ["./src/*"]
-      },
+    "paths": {
+      "crmet/*": ["./src/*"]
+    },
 
-      "allowJs": true,
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "jsx": "react-jsx",
-      "moduleResolution": "node",
-      "noImplicitAny": true,
-    }
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "noImplicitAny": true
+  }
 }

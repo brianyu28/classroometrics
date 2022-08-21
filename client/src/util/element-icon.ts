@@ -9,19 +9,19 @@ import SentimentNeutral from "crmet/assets/elements/sentiment.neutral.svg";
 import SentimentPositive from "crmet/assets/elements/sentiment.positive.svg";
 
 export const elementIcons = {
-    "completion.no": CompletionNo,
-    "completion.yes": CompletionYes,
-    "link": Link,
-    "pace.faster": PaceFaster,
-    "pace.slower": PaceSlower,
-    "sentiment.negative": SentimentNegative,
-    "sentiment.neutral": SentimentNeutral,
-    "sentiment.positive": SentimentPositive,
-}
+  "completion.no": CompletionNo,
+  "completion.yes": CompletionYes,
+  link: Link,
+  "pace.faster": PaceFaster,
+  "pace.slower": PaceSlower,
+  "sentiment.negative": SentimentNegative,
+  "sentiment.neutral": SentimentNeutral,
+  "sentiment.positive": SentimentPositive,
+};
 
 /**
  * Get SVG image source from the name of an icon.
  */
 export const getElementIcon = (name: string) => {
-    return name in elementIcons ? (elementIcons as any)[name] : NotFound;
-}
+  return name in elementIcons ? (elementIcons as any)[name] : NotFound;
+};

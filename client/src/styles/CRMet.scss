@@ -2,23 +2,25 @@ $background-color: #8cbddb;
 $button-color: #508eb5;
 
 body {
-    background-color: $background-color;
-    font-family: Verdana, sans-serif;
-    text-align: center;
-    margin: 0;
+  background-color: $background-color;
+  font-family: Verdana, sans-serif;
+  text-align: center;
+  margin: 0;
 }
 
-button, input, select {
-    background-color: white;
-    border: none;
-    border-radius: 5px;
-    color: black;
-    font-size: 14px;
-    padding: 8px;
-    margin: 3px;
+button,
+input,
+select {
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  font-size: 14px;
+  padding: 8px;
+  margin: 3px;
 }
 
 .error-text {
-    color: #911313;
-    font-style: italic;
+  color: #911313;
+  font-style: italic;
 }

@@ -1,23 +1,22 @@
 .create-element-form {
+  .form-inputs {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    grid-gap: 5px;
+    justify-content: center;
 
-    .form-inputs {
-        display: grid;
-        grid-template-columns: max-content max-content;
-        grid-gap: 5px;
-        justify-content: center;
+    label {
+      line-height: 34px;
+      text-align: right;
 
-        label {
-            line-height: 34px;
-            text-align: right;
-
-            &:after {
-                content: ":";
-            }
-        }
-
-        input[type="checkbox"] {
-            margin-right: auto;
-            transform: scale(1.2);
-        }
+      &:after {
+        content: ":";
+      }
     }
+
+    input[type="checkbox"] {
+      margin-right: auto;
+      transform: scale(1.2);
+    }
+  }
 }

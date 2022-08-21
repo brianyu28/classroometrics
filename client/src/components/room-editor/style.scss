@@ -1,15 +1,16 @@
 .room-editor {
-    display: flex;
-    flex-direction: row;
-    overflow-x: auto;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
 
-    // Add empty elements before and after with auto margins to center the editor
-    &::before, &::after {
-        content: '';
-        margin: auto;
-    }
+  // Add empty elements before and after with auto margins to center the editor
+  &::before,
+  &::after {
+    content: "";
+    margin: auto;
+  }
 
-    & > * {
-        flex-shrink: 0;
-    }
+  & > * {
+    flex-shrink: 0;
+  }
 }

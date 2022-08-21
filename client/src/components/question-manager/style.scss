@@ -1,28 +1,28 @@
 .question-manager {
-    background-color: #bcdbeb;
+  background-color: #bcdbeb;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 10px;
+  width: 250px;
+  flex-shrink: 0;
+
+  .question-editor {
     border-radius: 5px;
-    margin: 5px;
-    padding: 10px;
-    width: 250px;
-    flex-shrink: 0;
+    background-color: white;
+    font-size: 12px;
+    margin: 10px auto;
+    width: 200px;
+    text-align: left;
+    padding: 5px;
 
-    .question-editor {
-        border-radius: 5px;
-        background-color: white;
-        font-size: 12px;
-        margin: 10px auto;
-        width: 200px;
-        text-align: left;
-        padding: 5px;
-
-        .question-editor-delete {
-            display: block;
-            background-color: transparent;
-            color: red;
-            font-size: 11px;
-            margin: 8px 0 0 0;
-            padding: 0;
-            cursor: pointer;
-        }
+    .question-editor-delete {
+      display: block;
+      background-color: transparent;
+      color: red;
+      font-size: 11px;
+      margin: 8px 0 0 0;
+      padding: 0;
+      cursor: pointer;
     }
+  }
 }
