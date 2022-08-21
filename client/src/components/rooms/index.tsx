@@ -15,7 +15,7 @@ function Rooms() {
     const navigate = useNavigate();
 
     const refreshRooms = () => {
-        getRooms(userAuth)
+        getRooms()
         .then(res => res.json())
         .then((rooms: Room[])  => {
             setRooms(rooms);

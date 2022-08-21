@@ -2,8 +2,6 @@
  * API client.
  */
 
-import { UserAuthentication } from "crmet/data/User";
-
 const BASE_URL = '/api';
 
 // https://docs.djangoproject.com/en/4.0/ref/csrf/
@@ -22,26 +20,23 @@ function getCookie(name: string) {
     return cookieValue;
 }
 
-export function generateApiHeaders(auth: UserAuthentication | null) {
-    if (auth === null) {
-        return {};
-    }
+export function generateApiHeaders() {
     return {
         'X-CSRFToken': getCookie('csrftoken')
     }
 }
 
-export function apiGet(auth: UserAuthentication | null, endpoint: string) {
+export function apiGet(endpoint: string) {
     const url = BASE_URL + endpoint;
     return fetch(url, {
-        headers: generateApiHeaders(auth)
+        headers: generateApiHeaders()
     })
 }
 
-export function apiPost(auth: UserAuthentication | null, endpoint: string, data: object = null) {
+export function apiPost(endpoint: string, data: object = null) {
     const url = BASE_URL + endpoint;
     const headers = {
-        ...generateApiHeaders(auth),
+        ...generateApiHeaders(),
         'Content-Type': 'application/json',
     }
     return fetch(url, {
@@ -51,10 +46,10 @@ export function apiPost(auth: UserAuthentication | null, endpoint: string, data:
     })
 }
 
-export function apiPut(auth: UserAuthentication | null, endpoint: string, data: object = null) {
+export function apiPut(endpoint: string, data: object = null) {
     const url = BASE_URL + endpoint;
     const headers = {
-        ...generateApiHeaders(auth),
+        ...generateApiHeaders(),
         'Content-Type': 'application/json',
     }
     return fetch(url, {

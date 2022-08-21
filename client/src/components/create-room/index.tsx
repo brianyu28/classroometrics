@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 
 function CreateRoom() {
 
-    const { userAuth } = useContext(UserAuthContext);
     const [identifier, setIdentifier, updateIdentifier] = useInputFieldState('');
     const [title, setTitle, updateTitle] = useInputFieldState('');
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ function CreateRoom() {
             return;
         }
 
-        createRoom(userAuth, identifier, title)
+        createRoom(identifier, title)
         .then(res => res.json())
         .then((data: Room | Error) => {
             if ('error' in data) {

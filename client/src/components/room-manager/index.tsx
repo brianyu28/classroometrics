@@ -20,7 +20,6 @@ const ACTIVITY_LIFESPAN_SECONDS = 4;
 function RoomManager() {
     const navigate = useNavigate();
     const params = useParams();
-    const { userAuth } = useContext(UserAuthContext);
 
     const roomIdentifier = params.roomIdentifier;
 
@@ -89,7 +88,7 @@ function RoomManager() {
     }, [lastJsonMessage]);
 
     const reloadRoom = () => {
-        getTeacherRoomByIdentifier(userAuth, roomIdentifier)
+        getTeacherRoomByIdentifier(roomIdentifier)
         .then(res => res.json())
         .then((room: Room | null) => {
             if (room === null) {
@@ -101,7 +100,7 @@ function RoomManager() {
 
     // Send PUT request to API to make changes to room
     const saveUpdatedRoom = (updatedRoom: Room) => {
-        updateRoom(userAuth, updatedRoom)
+        updateRoom(updatedRoom)
         .then(res => res.json())
         .then((data : Room | Error) => {
             if ('error' in data) {
@@ -186,7 +185,7 @@ function RoomManager() {
         toggleIsInBatchToggleMode();
     }
 
-    useEffect(reloadRoom, [userAuth, roomIdentifier])
+    useEffect(reloadRoom, [roomIdentifier])
 
     const navigateToAllRooms = () => {
         navigate("/app/rooms/");

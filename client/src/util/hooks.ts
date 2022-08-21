@@ -88,7 +88,7 @@ export function useUserAuth():
     }, []);
 
     const handleLogout = () => {
-        logout(userAuth)
+        logout()
         .then(res => res.json())
         .then((data: UserAuthentication) => {
             if (!data.authenticated) {
