@@ -48,7 +48,7 @@ function RoomActivity({
                     removeQuestionAtIndex={removeQuestionAtIndex}
                 />
             }
-             <div className="room-activity-elements">
+             <div className="room-activity-elements" onClick={toggleIsShowingActivityView}>
                 {
                     elementActivity.map(activity =>
                         <img
