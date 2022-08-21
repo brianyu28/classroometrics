@@ -24,7 +24,11 @@ def viewer(request: HttpRequest, identifier: str) -> HttpResponse:
     Access student view for room.
     """
     room = RoomService.get_room_by_identifier(identifier)
-    return render(request, "core/viewer.html", {
-        "title": (room.title or "Classroometrics") if room else "Classroometrics",
-        "room_id": room.id if room else None,
-    })
+    return render(
+        request,
+        "core/viewer.html",
+        {
+            "title": (room.title or "Classroometrics") if room else "Classroometrics",
+            "room_id": room.id if room else None,
+        },
+    )

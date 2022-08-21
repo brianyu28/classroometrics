@@ -9,6 +9,7 @@ from channels.generic.websocket import WebsocketConsumer
 
 from core.services.websocket_service import WebsocketService
 
+
 class StudentConsumer(WebsocketConsumer):
     """
     Websocket consumer for student room view.
@@ -29,10 +30,7 @@ class StudentConsumer(WebsocketConsumer):
         room_id = self.scope["url_route"]["kwargs"]["room_id"]
         self.room_id = room_id
         self.group_name = WebsocketService.get_student_group_name_for_room_id(room_id)
-        async_to_sync(self.channel_layer.group_add)(
-            self.group_name,
-            self.channel_name
-        )
+        async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)
         self.accept()
 
     def disconnect(self, code):
@@ -40,8 +38,7 @@ class StudentConsumer(WebsocketConsumer):
         Disconnect student websocket connection.
         """
         async_to_sync(self.channel_layer.group_discard)(
-            self.group_name,
-            self.channel_name
+            self.group_name, self.channel_name
         )
 
     def receive(self, text_data=None, bytes_data=None):
@@ -65,7 +62,11 @@ class StudentConsumer(WebsocketConsumer):
         Broadcast to student listeners that room has updated.
         """
         room = event["room"]
-        self.send(text_data=json.dumps({
-            "type": "event_room_update",
-            "room": room,
-        }))
+        self.send(
+            text_data=json.dumps(
+                {
+                    "type": "event_room_update",
+                    "room": room,
+                }
+            )
+        )

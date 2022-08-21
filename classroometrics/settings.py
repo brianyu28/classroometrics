@@ -85,7 +85,7 @@ DATABASES = {
         "USER": os.environ.get("MYSQL_USER"),
         "PASSWORD": os.environ.get("MYSQL_PASSWORD"),
         "HOST": os.environ.get("MYSQL_HOST"),
-        "PORT": os.environ.get("MYSQL_PORT", "3306")
+        "PORT": os.environ.get("MYSQL_PORT", "3306"),
     }
 }
 
@@ -136,23 +136,23 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGGING = {
-     "version": 1,
-     "disable_existing_loggers": False,
-     "handlers": {
-         "file": {
-             "level": "WARNING",
-             "class": "logging.FileHandler",
-             "filename": "/var/log/debug.log",
-         },
-     },
-     "loggers": {
-         "django": {
-             "handlers": ["file"],
-             "level": "WARNING",
-             "propagate": True,
-         },
-     },
- }
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": "/var/log/debug.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": True,
+        },
+    },
+}
 
 ASGI_APPLICATION = "classroometrics.asgi.application"
 CHANNEL_LAYERS = {

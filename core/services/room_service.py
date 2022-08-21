@@ -7,6 +7,7 @@ from core.models import Room, User
 from core.services.element_service import ElementService
 from core.services.websocket_service import WebsocketService
 
+
 class RoomException(Exception):
     """
     Exception while managing rooms.
@@ -20,10 +21,7 @@ class RoomService:
 
     @staticmethod
     def create_room(
-        owner: User,
-        identifier: str,
-        title: str = "",
-        populate_default: bool = True
+        owner: User, identifier: str, title: str = "", populate_default: bool = True
     ) -> Room:
         """
         Create a new room for a user.
@@ -46,11 +44,7 @@ class RoomService:
         if identifier == "":
             raise RoomException("Identifier must not be blank.")
 
-        room = Room(
-            owner=owner,
-            identifier=identifier,
-            title=title
-        )
+        room = Room(owner=owner, identifier=identifier, title=title)
         room.save()
 
         if populate_default:
@@ -155,12 +149,10 @@ class RoomService:
             room: Room -- Room update to broadcast
         """
         WebsocketService.broadcast_updated_room_to_students(
-            room.id,
-            RoomService.serialize_room(room, visible_only=True)
+            room.id, RoomService.serialize_room(room, visible_only=True)
         )
         WebsocketService.broadcast_updated_room_to_teachers(
-            room.id,
-            RoomService.serialize_room(room, visible_only=False)
+            room.id, RoomService.serialize_room(room, visible_only=False)
         )
 
     @staticmethod
@@ -181,7 +173,8 @@ class RoomService:
             room.title = updated_room["title"]
             room_needs_saving = True
 
-        if ("questions_enabled" in updated_room
+        if (
+            "questions_enabled" in updated_room
             and isinstance(updated_room["questions_enabled"], bool)
             and updated_room["questions_enabled"] != room.questions_enabled
         ):

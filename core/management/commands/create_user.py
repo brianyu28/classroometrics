@@ -8,28 +8,23 @@ from django.core.management.base import BaseCommand, CommandError
 
 from core.services.user_service import UserService
 
+
 class Command(BaseCommand):
     """
     Management command.
     """
+
     help = "Create a new user account."
 
     def add_arguments(self, parser):
-        parser.add_argument(
-            "--username",
-            type=str,
-            help="Username",
-            required=True
-        )
+        parser.add_argument("--username", type=str, help="Username", required=True)
         parser.add_argument(
             "--is_superuser",
             action="store_true",
-            help="Indicate that user should be superuser"
+            help="Indicate that user should be superuser",
         )
         parser.add_argument(
-            "--is_staff",
-            action="store_true",
-            help="Indicate that user should be staff"
+            "--is_staff", action="store_true", help="Indicate that user should be staff"
         )
 
     def handle(self, *args, **options):
@@ -38,7 +33,7 @@ class Command(BaseCommand):
             username=options["username"],
             password=password,
             is_staff=options["is_staff"],
-            is_superuser=options["is_superuser"]
+            is_superuser=options["is_superuser"],
         )
         if user is None:
             raise CommandError("Failed to create user.")

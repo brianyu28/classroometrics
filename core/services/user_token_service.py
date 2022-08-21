@@ -11,13 +11,16 @@ from core.models import User, UserToken
 
 USER_TOKEN_LENGTH = 40
 
+
 class UserTokenService:
     """
     Service for managing user tokens.
     """
 
     @staticmethod
-    def create_token(user: User, token_string: str, expiration: date | None = None) -> UserToken:
+    def create_token(
+        user: User, token_string: str, expiration: date | None = None
+    ) -> UserToken:
         """
         Create a new token.
 

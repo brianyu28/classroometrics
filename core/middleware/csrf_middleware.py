@@ -4,7 +4,11 @@ CSRF middleware for core app.
 
 from django.middleware.csrf import CsrfViewMiddleware
 
-from core.services.authentication_service import AuthenticationException, AuthenticationService
+from core.services.authentication_service import (
+    AuthenticationException,
+    AuthenticationService,
+)
+
 
 class CRMetCsrfViewMiddleware(CsrfViewMiddleware):
     """
@@ -15,7 +19,9 @@ class CRMetCsrfViewMiddleware(CsrfViewMiddleware):
     def process_view(self, request, callback, callback_args, callback_kwargs):
         if AuthenticationService.request_has_authorization_header(request):
             try:
-                user = AuthenticationService.authenticate_user_from_request_headers(request)
+                user = AuthenticationService.authenticate_user_from_request_headers(
+                    request
+                )
                 # Custom property set for indicating the user authenticated from request headers
                 request.token_authenticated_user = user
                 return self._accept(request)

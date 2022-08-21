@@ -34,10 +34,7 @@ def rooms(user: User, request: HttpRequest, body: dict) -> JsonResponse:
     """
     if request.method == "GET":
         user_rooms = RoomService.get_rooms_for_user(user)
-        return JsonResponse([
-            room.serialize()
-            for room in user_rooms
-        ], safe=False)
+        return JsonResponse([room.serialize() for room in user_rooms], safe=False)
 
     if request.method == "POST":
         identifier = body["identifier"]
@@ -58,7 +55,9 @@ def rooms(user: User, request: HttpRequest, body: dict) -> JsonResponse:
 @require_http_methods(["PUT"])
 @parse_json()
 @require_authentication
-def room_update(user: User, request: HttpRequest, body: dict, room_id: int) -> JsonResponse:
+def room_update(
+    user: User, request: HttpRequest, body: dict, room_id: int
+) -> JsonResponse:
     """
     Update room.
 
@@ -91,7 +90,9 @@ def room_viewer(request: HttpRequest, room_id: int) -> JsonResponse:
 @require_http_methods(["GET"])
 @require_authentication
 # pylint: disable=unused-argument
-def room_by_identifier(user: User, request: HttpRequest, room_identifier: str) -> JsonResponse:
+def room_by_identifier(
+    user: User, request: HttpRequest, room_identifier: str
+) -> JsonResponse:
     """
     Get the room for a teacher by its identifier.
     """

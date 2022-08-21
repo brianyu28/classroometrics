@@ -5,6 +5,7 @@ Service for managing websocket connections and groups.
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+
 class WebsocketService:
     """
     Service for managing websocket connections and groups.
@@ -42,10 +43,7 @@ class WebsocketService:
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             WebsocketService.get_student_group_name_for_room_id(room_id),
-            {
-                "type": "event_room_update",
-                "room": serialized_room
-            }
+            {"type": "event_room_update", "room": serialized_room},
         )
 
     @staticmethod
@@ -60,10 +58,7 @@ class WebsocketService:
         channel_layer = get_channel_layer()
         async_to_sync(channel_layer.group_send)(
             WebsocketService.get_teacher_group_name_for_room_id(room_id),
-            {
-                "type": "event_room_update",
-                "room": serialized_room
-            }
+            {"type": "event_room_update", "room": serialized_room},
         )
 
     @staticmethod
@@ -81,7 +76,7 @@ class WebsocketService:
             {
                 "type": "event_element_activity",
                 "element_id": element_id,
-            }
+            },
         )
 
     @staticmethod
@@ -99,5 +94,5 @@ class WebsocketService:
             {
                 "type": "event_question",
                 "question": question,
-            }
+            },
         )

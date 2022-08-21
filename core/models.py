@@ -10,6 +10,7 @@ class User(AbstractUser):
     """
     Represents a user account.
     """
+
     def serialize(self) -> dict:
         """
         Serialize user.
@@ -24,6 +25,7 @@ class UserToken(models.Model):
     """
     Represents an API token a user can use to make requests.
     """
+
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tokens")
     token = models.CharField(max_length=200)
     expiration = models.DateTimeField(null=True, blank=True)
@@ -39,7 +41,7 @@ class UserToken(models.Model):
             "id": self.id,
             "user_id": self.user.id,
             "token": self.token,
-            "expiration": self.expiration
+            "expiration": self.expiration,
         }
 
 
@@ -47,6 +49,7 @@ class Room(models.Model):
     """
     Represents a room where teachers and students can interact.
     """
+
     identifier = models.CharField(max_length=200, unique=True)
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="rooms")
     title = models.CharField(max_length=200, blank=True)
@@ -81,6 +84,7 @@ class Element(models.Model):
     """
     Represents an interaction element in a room.
     """
+
     room = models.ForeignKey("Room", on_delete=models.CASCADE, related_name="elements")
     icon = models.CharField(max_length=200)
     name = models.CharField(max_length=200, blank=True)

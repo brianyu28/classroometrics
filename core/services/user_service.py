@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError
 
 from core.models import User
 
+
 class UserService:
     """
     Service responsible for managing users.
@@ -13,10 +14,7 @@ class UserService:
 
     @staticmethod
     def create_user(
-        username: str,
-        password: str,
-        is_staff: bool = False,
-        is_superuser: bool = False
+        username: str, password: str, is_staff: bool = False, is_superuser: bool = False
     ) -> User | None:
         """
         Create a new user.
@@ -35,10 +33,7 @@ class UserService:
             - User might not be created if username is duplicate
         """
         try:
-            user = User.objects.create_user(
-                username,
-                password=password
-            )
+            user = User.objects.create_user(username, password=password)
         except IntegrityError:
             return None
         user.is_staff = is_staff or is_superuser

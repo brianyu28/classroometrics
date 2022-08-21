@@ -9,7 +9,10 @@ from typing import Callable, List
 
 from django.http import JsonResponse
 
-from core.services.authentication_service import AuthenticationException, AuthenticationService
+from core.services.authentication_service import (
+    AuthenticationException,
+    AuthenticationService,
+)
 
 
 def api_error(message: str, status: int = 400) -> JsonResponse:
@@ -51,7 +54,9 @@ def parse_json(methods: List[str] | None = None) -> Callable:
                     return api_error("Invalid JSON body.")
                 return function(request, body, *args, **kwargs)
             return function(request, None, *args, **kwargs)
+
         return wrap
+
     return wrapper
 
 
@@ -66,6 +71,7 @@ def require_fields(fields: List[str], method: str = "POST") -> Callable:
     Returns:
         Callable -- Decorator for view function
     """
+
     def wrapper(function):
         @wraps(function)
         def wrap(request, body, *args, **kwargs):
@@ -74,7 +80,9 @@ def require_fields(fields: List[str], method: str = "POST") -> Callable:
                     if field not in body:
                         return api_error(f"Missing required field: {field}")
             return function(request, body, *args, **kwargs)
+
         return wrap
+
     return wrapper
 
 
@@ -88,6 +96,7 @@ def require_authentication(function: Callable) -> Callable:
     Returns:
         Callable -- Wrapped view function
     """
+
     @wraps(function)
     def wrap(request, *args, **kwargs):
         # See if we have a user from the Authorization token during CSRF middleware
@@ -101,4 +110,5 @@ def require_authentication(function: Callable) -> Callable:
         except AuthenticationException as exception:
             return api_error(str(exception))
         return function(user, request, *args, **kwargs)
+
     return wrap
