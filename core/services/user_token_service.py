@@ -1,5 +1,5 @@
 """
-User token service.
+Service for managing user tokens.
 """
 
 import secrets
@@ -12,6 +12,9 @@ from core.models import User, UserToken
 USER_TOKEN_LENGTH = 40
 
 class UserTokenService:
+    """
+    Service for managing user tokens.
+    """
 
     @staticmethod
     def create_token(user: User, token_string: str, expiration: date | None = None) -> UserToken:
@@ -31,7 +34,7 @@ class UserTokenService:
         token = UserToken(
             user=user,
             token=token_string,
-            expiration=None
+            expiration=expiration,
         )
         token.save()
         return token
@@ -111,6 +114,4 @@ class UserTokenService:
         token = UserToken.objects.filter(token=token_string).first()
         if token is None:
             return None
-        else:
-            return token.user
-
+        return token.user

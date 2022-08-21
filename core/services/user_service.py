@@ -7,6 +7,9 @@ from django.db.utils import IntegrityError
 from core.models import User
 
 class UserService:
+    """
+    Service responsible for managing users.
+    """
 
     @staticmethod
     def create_user(

@@ -1,6 +1,7 @@
 {
   "name": "classroometrics-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "Brian Yu <brian@brianyu.me>",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

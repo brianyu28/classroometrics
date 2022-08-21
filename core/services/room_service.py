@@ -1,15 +1,30 @@
+"""
+Service for managing rooms.
+"""
+
 from typing import List
-from core.models import Element, Room, User
+from core.models import Room, User
 from core.services.element_service import ElementService
 from core.services.websocket_service import WebsocketService
 
 class RoomException(Exception):
-    pass
+    """
+    Exception while managing rooms.
+    """
+
 
 class RoomService:
+    """
+    Service for managing rooms.
+    """
 
     @staticmethod
-    def create_room(owner: User, identifier: str, title: str = "", populate_default: bool = True) -> Room:
+    def create_room(
+        owner: User,
+        identifier: str,
+        title: str = "",
+        populate_default: bool = True
+    ) -> Room:
         """
         Create a new room for a user.
 
@@ -86,34 +101,34 @@ class RoomService:
         return room
 
     @staticmethod
-    def get_room_by_id(id: int) -> Room | None:
+    def get_room_by_id(room_id: int) -> Room | None:
         """
         Return a room based on its id.
 
         Arguments:
-            id: int -- Room ID
+            room_id: int -- Room ID
 
         Returns:
             Room | None -- Room if it exists, or None
         """
         try:
-            return Room.objects.get(pk=id)
+            return Room.objects.get(pk=room_id)
         except Room.DoesNotExist:
             return None
 
     @staticmethod
-    def get_room_for_user_by_id(id: int, user: User) -> Room | None:
+    def get_room_for_user_by_id(room_id: int, user: User) -> Room | None:
         """
         Return a room based on identifier, belonging to a particular user.
 
         Arguments:
-            id: int -- Room ID
+            room_id: int -- Room ID
             user: User -- User making the request
 
         Returns:
             Room | None -- Room if it exists and authorized, otherwise None
         """
-        room = RoomService.get_room_by_id(id)
+        room = RoomService.get_room_by_id(room_id)
         if room is None or room.owner != user:
             return None
         return room
@@ -127,7 +142,7 @@ class RoomService:
             room: Room -- The room to serialize
 
         Optional arguments:
-            visible_only: bool -- Whether only the visible elements should be returned, default False
+            visible_only: bool -- Whether only visible elements should be returned, default False
         """
         return room.serialize(visible_only=visible_only)
 
@@ -167,7 +182,7 @@ class RoomService:
             room_needs_saving = True
 
         if ("questions_enabled" in updated_room
-            and type(updated_room["questions_enabled"]) == bool
+            and isinstance(updated_room["questions_enabled"], bool)
             and updated_room["questions_enabled"] != room.questions_enabled
         ):
             room.questions_enabled = updated_room["questions_enabled"]
@@ -179,7 +194,7 @@ class RoomService:
         if "groups" in updated_room:
             # Get the possible elements to update
             elements = ElementService.get_elements_for_room(room)
-            element_map = dict()
+            element_map = {}
             for element in elements:
                 element_map[element.id] = element
 
@@ -207,8 +222,7 @@ class RoomService:
                     del element_map[element.id]
 
             # Remove elements that weren't included in update
-            for element_id in element_map:
-                element = element_map[element_id]
+            for _, element in element_map.items():
                 ElementService.delete_element(element)
 
         if broadcast:

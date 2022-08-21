@@ -77,19 +77,21 @@ function Login({
                 { error !== null && <p className="error-text">Error: {error}</p> }
                 <div>
                     <input
-                        type="text"
+                        type='text'
                         value={username}
                         onChange={updateUsername}
-                        placeholder="Username"
+                        placeholder='Username'
+                        autoComplete='username'
                         ref={usernameField}
                     />
                 </div>
                 <div>
                     <input
-                        type="password"
+                        type='password'
                         value={password}
                         onChange={updatePassword}
-                        placeholder="Password"
+                        placeholder='Password'
+                        autoComplete='current-password'
                     />
                 </div>
                 <div>

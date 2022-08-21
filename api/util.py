@@ -1,10 +1,14 @@
+"""
+Utility functions for API routes.
+"""
+
 import json
 
 from functools import wraps
-from django.http import JsonResponse
 from typing import Callable, List
 
-from core.models import UserToken
+from django.http import JsonResponse
+
 from core.services.authentication_service import AuthenticationException, AuthenticationService
 
 
@@ -24,16 +28,19 @@ def api_error(message: str, status: int = 400) -> JsonResponse:
     return JsonResponse({"error": message}, status=status)
 
 
-def parse_json(methods: List[str] = ["POST", "PUT"]) -> Callable:
+def parse_json(methods: List[str] | None = None) -> Callable:
     """
     Parse JSON payload from request body.
 
     Arguments:
-        methods: str -- Request methods for which to parse JSON
+        methods: List[str] | None -- Request methods for which to parse JSON, None to use default
 
     Returns:
         Callable -- Decorator for view function
     """
+    if methods is None:
+        methods = ["POST", "PUT"]
+
     def wrapper(function):
         @wraps(function)
         def wrap(request, *args, **kwargs):
@@ -43,8 +50,7 @@ def parse_json(methods: List[str] = ["POST", "PUT"]) -> Callable:
                 except json.decoder.JSONDecodeError:
                     return api_error("Invalid JSON body.")
                 return function(request, body, *args, **kwargs)
-            else:
-                return function(request, None, *args, **kwargs)
+            return function(request, None, *args, **kwargs)
         return wrap
     return wrapper
 
@@ -92,7 +98,7 @@ def require_authentication(function: Callable) -> Callable:
             if request.user.is_authenticated:
                 return function(request.user, request, *args, **kwargs)
             user = AuthenticationService.authenticate_user_from_request_headers(request)
-        except AuthenticationException as e:
-            return api_error(str(e))
+        except AuthenticationException as exception:
+            return api_error(str(exception))
         return function(user, request, *args, **kwargs)
     return wrap

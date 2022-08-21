@@ -1,12 +1,15 @@
+"""
+API controller for user authentication endpoints.
+"""
+
 from django.http import JsonResponse
 from django.http.request import HttpRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
-from core.models import User
+from api.util import parse_json, require_fields
 from core.services.authentication_service import AuthenticationService
 
-from api.util import parse_json, require_authentication, require_fields
 
 @csrf_exempt
 @require_http_methods(["POST"])
@@ -37,7 +40,7 @@ def login(request: HttpRequest, body: dict) -> JsonResponse:
 
 
 @require_http_methods(["GET"])
-def me(request: HttpRequest) -> JsonResponse:
+def current_user(request: HttpRequest) -> JsonResponse:
     """
     Get information about currently signed in user.
     """
@@ -48,7 +51,9 @@ def me(request: HttpRequest) -> JsonResponse:
 
 
 @require_http_methods(["POST"])
-@require_authentication
-def logout(user: User, request: HttpRequest) -> JsonResponse:
+def logout(request: HttpRequest) -> JsonResponse:
+    """
+    Log out the current authenticated user.
+    """
     AuthenticationService.remove_user_from_session(request)
     return JsonResponse(AuthenticationService.get_guest_auth_data())

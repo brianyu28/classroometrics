@@ -1,13 +1,34 @@
+"""
+Websocket consumer for teacher room view.
+"""
+
 import json
+
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
-from ..services.room_service import RoomService
 
+from core.services.room_service import RoomService
 from core.services.websocket_service import WebsocketService
 
+
 class TeacherConsumer(WebsocketConsumer):
+    """
+    Websocket consumer for teacher room view.
+    """
+
+    def __init__(self, *args, **kwargs):
+        """
+        Initialize teacher websocket consumer.
+        """
+        super().__init__(self, *args, **kwargs)
+        self.room_id = None
+        self.user = None
+        self.group_name = None
 
     def connect(self):
+        """
+        Establish teacher websocket connection.
+        """
         # Verify that room exists
         room_id = self.scope["url_route"]["kwargs"]["room_id"]
         room = RoomService.get_room_by_id(room_id)
@@ -26,27 +47,39 @@ class TeacherConsumer(WebsocketConsumer):
         )
         self.accept()
 
-    def disconnect(self, close_code):
+    def disconnect(self, code):
+        """
+        Disconnect teacher websocket connection.
+        """
         async_to_sync(self.channel_layer.group_discard)(
             self.group_name,
             self.channel_name
         )
 
-    def event_room_update(self, event):
+    def event_room_update(self, event: dict):
+        """
+        Broadcast to teacher that room has updated.
+        """
         room = event["room"]
         self.send(text_data=json.dumps({
             "type": "event_room_update",
             "room": room,
         }))
 
-    def event_element_activity(self, event):
+    def event_element_activity(self, event: dict):
+        """
+        Broadcast to teacher that element interaction took place.
+        """
         element_id = event["element_id"]
         self.send(text_data=json.dumps({
             "type": "event_element_activity",
             "element_id": element_id,
         }))
 
-    def event_question(self, event):
+    def event_question(self, event: dict):
+        """
+        Broadcast to teacher that new question asked.
+        """
         question = event["question"]
         self.send(text_data=json.dumps({
             "type": "event_question",

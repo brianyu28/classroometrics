@@ -10,10 +10,15 @@ from core.services.user_token_service import UserTokenService
 
 
 class AuthenticationException(Exception):
-    pass
+    """
+    Exception that takes place during authentication.
+    """
 
 
 class AuthenticationService:
+    """
+    Service for handling user authentication.
+    """
 
     HEADER_NAME = "Authorization"
 
@@ -63,7 +68,9 @@ class AuthenticationService:
             raise AuthenticationException("Missing Authorization header.")
         parts = auth_header.strip().split(" ")
         if len(parts) != 2 or parts[0] != "token":
-            raise AuthenticationException(f"Invalid format for {AuthenticationService.HEADER_NAME} header.")
+            raise AuthenticationException(
+                f"Invalid format for {AuthenticationService.HEADER_NAME} header."
+            )
         token = parts[1]
         user = UserTokenService.get_user_from_token(token)
         if user is None:

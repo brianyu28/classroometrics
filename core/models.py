@@ -1,9 +1,19 @@
+"""
+Core models for application.
+"""
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
 class User(AbstractUser):
-    def serialize(self):
+    """
+    Represents a user account.
+    """
+    def serialize(self) -> dict:
+        """
+        Serialize user.
+        """
         return {
             "id": self.id,
             "username": self.username,
@@ -11,14 +21,20 @@ class User(AbstractUser):
 
 
 class UserToken(models.Model):
+    """
+    Represents an API token a user can use to make requests.
+    """
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name="tokens")
     token = models.CharField(max_length=200)
     expiration = models.DateTimeField(null=True, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Token for {self.user}"
 
-    def serialize(self):
+    def serialize(self) -> dict:
+        """
+        Serialize token.
+        """
         return {
             "id": self.id,
             "user_id": self.user.id,
@@ -28,15 +44,21 @@ class UserToken(models.Model):
 
 
 class Room(models.Model):
+    """
+    Represents a room where teachers and students can interact.
+    """
     identifier = models.CharField(max_length=200, unique=True)
     owner = models.ForeignKey("User", on_delete=models.CASCADE, related_name="rooms")
     title = models.CharField(max_length=200, blank=True)
     questions_enabled = models.BooleanField(default=False)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.title} ({self.owner.username})"
 
-    def serialize(self, visible_only=False):
+    def serialize(self, visible_only=False) -> dict:
+        """
+        Serialize room and its elements.
+        """
         elements = self.elements.order_by("section", "order")
         if visible_only:
             elements = elements.filter(is_visible=True)
@@ -56,6 +78,9 @@ class Room(models.Model):
 
 
 class Element(models.Model):
+    """
+    Represents an interaction element in a room.
+    """
     room = models.ForeignKey("Room", on_delete=models.CASCADE, related_name="elements")
     icon = models.CharField(max_length=200)
     name = models.CharField(max_length=200, blank=True)
@@ -64,10 +89,13 @@ class Element(models.Model):
     is_visible = models.BooleanField(default=True)
     link = models.CharField(max_length=2048, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} ({self.identifier})"
 
-    def serialize(self):
+    def serialize(self) -> dict:
+        """
+        Serialize room element.
+        """
         return {
             "id": self.id,
             "room_id": self.room.id,

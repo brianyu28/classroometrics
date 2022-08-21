@@ -1,0 +1,9 @@
+{
+    "name": "classroometrics",
+    "version": "1.0.0",
+    "author": "Brian Yu <brian@brianyu.me>",
+    "private": true,
+    "scripts": {
+        "lint": "pylint --recursive=y api classroometrics core --ignore migrations"
+    }
+}
