@@ -4,6 +4,8 @@
     "author": "Brian Yu <brian@brianyu.me>",
     "private": true,
     "scripts": {
-        "lint": "pylint --recursive=y api classroometrics core --ignore migrations"
+        "format": "npm run format:py; npm run format:js",
+        "format:py": "black api core classroometrics",
+        "format:js": "cd client && npm run format"
     }
 }
