@@ -6,6 +6,11 @@
     "scripts": {
         "format": "npm run format:py; npm run format:js",
         "format:py": "black api core classroometrics",
-        "format:js": "cd client && npm run format"
+        "format:js": "cd client && npm run format",
+        "start:py": "docker-compose up",
+        "start:js": "cd client && npm run watch",
+        "test": "npm run test:py; npm run test:js",
+        "test:py": "docker-compose exec web python manage.py test",
+        "test:js": "cd client && npm run test"
     }
 }
