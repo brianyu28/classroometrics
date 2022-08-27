@@ -47,7 +47,7 @@ def rooms(user: User, request: HttpRequest, body: dict) -> JsonResponse:
             return api_error("Room identifier already in use")
         except RoomException:
             return api_error("Room identifier cannot be blank")
-        return JsonResponse(room.serialize())
+        return JsonResponse(room.serialize(), status=201)
 
     return api_error("Invalid request method")
 

@@ -121,7 +121,7 @@ class ElementService:
             room=room,
             icon=icon if isinstance(icon, str) else "",
             name=name if isinstance(name, str) else "",
-            section=section if isinstance(section, int) else 1,
+            section=section if isinstance(section, int) else 0,
             order=order if isinstance(order, int) else 0,
             is_visible=is_visible if isinstance(is_visible, bool) else True,
             link=link if isinstance(link, str) else "",
