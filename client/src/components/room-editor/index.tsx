@@ -34,14 +34,14 @@ function RoomEditor({
   updateGroup,
   updateVisibilityForElement,
 }: RoomEditorProps) {
-  // Non-null if create room view is open, set to the group number
-  const [createRoomViewGroup, setCreateRoomViewGroup] = useState<number | null>(
+  // Non-null if create element view is open, set to the group number
+  const [createElementViewGroup, setCreateElementViewGroup] = useState<number | null>(
     null
   );
 
   const handleAddElement = (element: Element) => {
-    if (createRoomViewGroup === null) return;
-    addElementToGroup(element, createRoomViewGroup);
+    if (createElementViewGroup === null) return;
+    addElementToGroup(element, createElementViewGroup);
   };
 
   return (
@@ -66,22 +66,22 @@ function RoomEditor({
               }
               updateVisibilityForElement={updateVisibilityForElement}
               shouldShowAddButton={
-                createRoomViewGroup === null && showEditButtons
+                createElementViewGroup === null && showEditButtons
               }
               shouldShowDeleteButton={showEditButtons}
-              toggleCreateRoomViewOpen={() =>
-                setCreateRoomViewGroup(group_number)
+              toggleCreateElementViewOpen={() =>
+                setCreateElementViewGroup(group_number)
               }
             />
           )
         )}
       </div>
-      {createRoomViewGroup !== null && (
+      {createElementViewGroup !== null && (
         <CreateElement
           roomId={room.id}
-          groupIndex={createRoomViewGroup}
+          groupIndex={createElementViewGroup}
           onAddElement={handleAddElement}
-          toggleCreateRoomViewOpen={() => setCreateRoomViewGroup(null)}
+          toggleCreateElementViewOpen={() => setCreateElementViewGroup(null)}
         />
       )}
     </div>

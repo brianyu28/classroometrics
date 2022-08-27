@@ -13,7 +13,7 @@ interface ElementGroupEditorProps {
   updateVisibilityForElement: (elementId: number, isVisible: boolean) => void;
   shouldShowAddButton: boolean;
   shouldShowDeleteButton: boolean;
-  toggleCreateRoomViewOpen: () => void;
+  toggleCreateElementViewOpen: () => void;
 }
 
 function ElementGroupEditor({
@@ -24,7 +24,7 @@ function ElementGroupEditor({
   updateVisibilityForElement,
   shouldShowAddButton,
   shouldShowDeleteButton,
-  toggleCreateRoomViewOpen,
+  toggleCreateElementViewOpen,
 }: ElementGroupEditorProps) {
   const classNames = ["element-group-editor"];
 
@@ -112,7 +112,7 @@ function ElementGroupEditor({
       </DragDropContext>
 
       {shouldShowAddButton && (
-        <button onClick={toggleCreateRoomViewOpen}>Add</button>
+        <button onClick={toggleCreateElementViewOpen}>Add</button>
       )}
     </div>
   );

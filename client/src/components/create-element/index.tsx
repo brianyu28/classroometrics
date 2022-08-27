@@ -10,14 +10,14 @@ interface CreateElementProps {
   roomId: number;
   groupIndex: number;
   onAddElement: (element: Element) => void;
-  toggleCreateRoomViewOpen: () => void;
+  toggleCreateElementViewOpen: () => void;
 }
 
 function CreateElement({
   roomId,
   groupIndex,
   onAddElement: addElement,
-  toggleCreateRoomViewOpen,
+  toggleCreateElementViewOpen,
 }: CreateElementProps) {
   const [icon, setIcon, updateIcon] = useInputFieldState("link");
   const [name, setName, updateName] = useInputFieldState("");
@@ -25,7 +25,7 @@ function CreateElement({
   const [isVisible, toggleIsVisible] = useBooleanState(true);
 
   const submitCreateElementForm = (event: React.FormEvent) => {
-    event.stopPropagation();
+    event.preventDefault();
     const element = {
       room_id: roomId,
       icon,
@@ -56,26 +56,28 @@ function CreateElement({
             </option>
           </select>
 
-          <label htmlFor="name">Name</label>
+          <label htmlFor="create-element-form-name">Name</label>
           <input
+            id="create-element-form-name"
             autoFocus={true}
             type="text"
             value={name}
             onChange={updateName}
           />
 
-          <label htmlFor="link">Link (optional)</label>
-          <input type="text" value={link} onChange={updateLink} />
+          <label htmlFor="create-element-form-link">Link (optional)</label>
+          <input id="create-element-form-link" type="text" value={link} onChange={updateLink} />
 
-          <label htmlFor="is_visible">Visible?</label>
+          <label htmlFor="create-element-form-is-visible">Visible?</label>
           <input
+            id="create-element-form-is-visible"
             type="checkbox"
             checked={isVisible}
             onChange={toggleIsVisible}
           />
         </div>
         <div>
-          <button onClick={toggleCreateRoomViewOpen}>Cancel</button>
+          <button onClick={toggleCreateElementViewOpen}>Cancel</button>
           <input type="submit" value="Create" />
         </div>
       </form>
