@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import ElementIcon from ".";
 
 describe("ElementIcon", () => {
-  test("Renders an image", () => {
+  test("renders an image", () => {
     render(<ElementIcon icon="" />);
     expect(screen.getByRole("img")).toBeInTheDocument();
   });

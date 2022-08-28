@@ -39,12 +39,14 @@ function CreateRoom() {
           value={identifier}
           onChange={updateIdentifier}
           placeholder="Identifier"
+          aria-label="identifier"
         />
         <input
           type="text"
           value={title}
           onChange={updateTitle}
           placeholder="Title"
+          aria-label="title"
         />
         <input
           disabled={!canSubmitCreateRoomForm}
