@@ -35,9 +35,30 @@ class RoomControllerTestCase(TestCase):
         cls.test_room.save()
 
         # Arrange: Elements
-        Element(room=cls.test_room, icon="icon1", name="element1", section=0, order=0, is_visible=True).save()
-        Element(room=cls.test_room, icon="icon2", name="element2", section=0, order=0, is_visible=True).save()
-        Element(room=cls.test_room, icon="icon3", name="element3", section=0, order=0, is_visible=False).save()
+        Element(
+            room=cls.test_room,
+            icon="icon1",
+            name="element1",
+            section=0,
+            order=0,
+            is_visible=True,
+        ).save()
+        Element(
+            room=cls.test_room,
+            icon="icon2",
+            name="element2",
+            section=0,
+            order=0,
+            is_visible=True,
+        ).save()
+        Element(
+            room=cls.test_room,
+            icon="icon3",
+            name="element3",
+            section=0,
+            order=0,
+            is_visible=False,
+        ).save()
 
         # Arrange: Room 2
         cls.test_room2_identifier = "test_room2"

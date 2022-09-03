@@ -35,9 +35,9 @@ function RoomEditor({
   updateVisibilityForElement,
 }: RoomEditorProps) {
   // Non-null if create element view is open, set to the group number
-  const [createElementViewGroup, setCreateElementViewGroup] = useState<number | null>(
-    null
-  );
+  const [createElementViewGroup, setCreateElementViewGroup] = useState<
+    number | null
+  >(null);
 
   const handleAddElement = (element: Element) => {
     if (createElementViewGroup === null) return;

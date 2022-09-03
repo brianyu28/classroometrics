@@ -66,7 +66,12 @@ function CreateElement({
           />
 
           <label htmlFor="create-element-form-link">Link (optional)</label>
-          <input id="create-element-form-link" type="text" value={link} onChange={updateLink} />
+          <input
+            id="create-element-form-link"
+            type="text"
+            value={link}
+            onChange={updateLink}
+          />
 
           <label htmlFor="create-element-form-is-visible">Visible?</label>
           <input

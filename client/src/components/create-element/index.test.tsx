@@ -17,9 +17,13 @@ describe("CreateElement", () => {
       />
     );
     expect(screen.queryByText("Create Element")).toBeInTheDocument();
-    expect(screen.queryByRole("textbox", {name: "Name"})).toBeInTheDocument();
-    expect(screen.queryByRole("textbox", {name: "Link (optional)"})).toBeInTheDocument();
-    expect(screen.queryByRole("checkbox", {name: "Visible?"})).toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: "Name" })).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: "Link (optional)" })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("checkbox", { name: "Visible?" })
+    ).toBeInTheDocument();
   });
 
   test("toggles view visibility when cancel button is pressed", () => {
@@ -31,7 +35,7 @@ describe("CreateElement", () => {
         toggleCreateElementViewOpen={mockToggleCreateElementViewOpen}
       />
     );
-    fireEvent.click(screen.getByRole("button", {name: "Cancel"}));
+    fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(mockToggleCreateElementViewOpen.mock.calls.length).toBe(1);
   });
 
@@ -44,7 +48,7 @@ describe("CreateElement", () => {
         toggleCreateElementViewOpen={mockToggleCreateElementViewOpen}
       />
     );
-    fireEvent.click(screen.getByRole("button", {name: "Create"}));
+    fireEvent.click(screen.getByRole("button", { name: "Create" }));
     expect(mockOnAddElement.mock.calls.length).toBe(1);
     expect(mockToggleCreateElementViewOpen.mock.calls.length).toBe(0);
   });
