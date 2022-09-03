@@ -5,6 +5,7 @@ Views for core app.
 from django.http import HttpResponse
 from django.http.request import HttpRequest
 from django.shortcuts import render
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from core.services.room_service import RoomService
@@ -19,6 +20,7 @@ def index(request: HttpRequest, path: str) -> HttpResponse:
 
 
 @ensure_csrf_cookie
+@xframe_options_exempt
 def viewer(request: HttpRequest, identifier: str) -> HttpResponse:
     """
     Access student view for room.
