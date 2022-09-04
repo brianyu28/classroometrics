@@ -17,7 +17,8 @@ function RoomViewer({ id }: RoomViewerProps) {
   const [room, setRoom] = useState<Room | null>(null);
 
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    getStudentWebsocketURL(id)
+    getStudentWebsocketURL(id),
+    { shouldReconnect: () => true }
   );
 
   useEffect(() => {
@@ -61,14 +62,6 @@ function RoomViewer({ id }: RoomViewerProps) {
 
   useEffect(reloadRoom, [id]);
 
-  if (readyState === ReadyState.CLOSED) {
-    return (
-      <div>
-        <p>Connection closed. Refresh this page to continue.</p>
-      </div>
-    );
-  }
-
   if (id === null) {
     return (
       <div>
@@ -88,6 +81,9 @@ function RoomViewer({ id }: RoomViewerProps) {
 
   return (
     <div>
+      {readyState === ReadyState.CLOSED &&
+        <p>Connection closed. Trying to reconnect...</p>
+      }
       {room.groups.length > 0 && (
         <MajorElementsViewer
           elements={room.groups[0]}

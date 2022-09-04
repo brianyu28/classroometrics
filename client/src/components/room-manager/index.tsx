@@ -29,7 +29,8 @@ function RoomManager() {
   const [elementActivity, setElementActivity] = useState<ElementActivity[]>([]);
   const [questions, setQuestions] = useState<string[]>([]);
   const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    room !== null ? getTeacherWebsocketURL(room.id) : null
+    room !== null ? getTeacherWebsocketURL(room.id) : null,
+    { shouldReconnect: () => true }
   );
   const [elementCounts, setElementCounts] = useState<any>({});
 
@@ -211,14 +212,6 @@ function RoomManager() {
   useHotkeys("d", toggleQuestionsEnabled, [room]);
   useHotkeys("e", toggleEditButtons);
 
-  if (readyState === ReadyState.CLOSED) {
-    return (
-      <div>
-        <p>Connection closed. Refresh this page to continue.</p>
-      </div>
-    );
-  }
-
   if (isShowingActivityView) {
     return (
       <div>
@@ -238,6 +231,9 @@ function RoomManager() {
   return (
     <div>
       <h2>Room{room !== null && `: ${room.title}`}</h2>
+      {readyState === ReadyState.CLOSED &&
+        <p>Connection closed. Trying to reconnect...</p>
+      }
       <div>
         <button onClick={toggleIsShowingActivityView}>Activity View</button>
         <button onClick={navigateToAllRooms}>All Rooms</button>
