@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useWebSocket from "react-use-websocket";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useHotkeys } from "react-hotkeys-hook";
 
 import { getTeacherRoomByIdentifier, updateRoom } from "crmet/api/RoomClient";
@@ -28,7 +28,7 @@ function RoomManager() {
   const [room, setRoom, elementMap] = useRoom();
   const [elementActivity, setElementActivity] = useState<ElementActivity[]>([]);
   const [questions, setQuestions] = useState<string[]>([]);
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     room !== null ? getTeacherWebsocketURL(room.id) : null
   );
   const [elementCounts, setElementCounts] = useState<any>({});
@@ -210,6 +210,14 @@ function RoomManager() {
   useHotkeys("b", switchBatchToggle, [room, isInBatchToggleMode]);
   useHotkeys("d", toggleQuestionsEnabled, [room]);
   useHotkeys("e", toggleEditButtons);
+
+  if (readyState === ReadyState.CLOSED) {
+    return (
+      <div>
+        <p>Connection closed. Refresh this page to continue.</p>
+      </div>
+    );
+  }
 
   if (isShowingActivityView) {
     return (

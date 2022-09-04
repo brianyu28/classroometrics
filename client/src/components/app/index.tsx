@@ -12,12 +12,12 @@ function App() {
 
   useEffect(() => {
     if (isUserLoggedIn && location.pathname == "/app/") {
-      navigate("/app/rooms");
+      navigate("/app/rooms", { replace: true });
     }
   }, [location, isUserLoggedIn]);
 
   if (!isUserLoggedIn) {
-    return <Navigate to="/app/login" />;
+    return <Navigate to="/app/login" replace={true} />;
   }
 
   return (

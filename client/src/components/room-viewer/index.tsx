@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useWebSocket from "react-use-websocket";
+import useWebSocket, { ReadyState } from "react-use-websocket";
 
 import { getRoomForStudent } from "crmet/api/RoomClient";
 import { getStudentWebsocketURL } from "crmet/api/WebsocketClient";
@@ -16,7 +16,7 @@ interface RoomViewerProps {
 function RoomViewer({ id }: RoomViewerProps) {
   const [room, setRoom] = useState<Room | null>(null);
 
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     getStudentWebsocketURL(id)
   );
 
@@ -60,6 +60,14 @@ function RoomViewer({ id }: RoomViewerProps) {
   };
 
   useEffect(reloadRoom, [id]);
+
+  if (readyState === ReadyState.CLOSED) {
+    return (
+      <div>
+        <p>Connection closed. Refresh this page to continue.</p>
+      </div>
+    );
+  }
 
   if (id === null) {
     return (
