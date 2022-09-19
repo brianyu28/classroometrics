@@ -94,7 +94,7 @@ class Element(models.Model):
     link = models.CharField(max_length=2048, blank=True)
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.room.id})"
+        return f"{self.name} - {self.icon} ({self.room.id})"
 
     def serialize(self) -> dict:
         """
