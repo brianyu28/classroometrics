@@ -36,6 +36,7 @@ function CreateElement({
       link,
     };
     addElement(element);
+    toggleCreateElementViewOpen();
     return false;
   };
 
