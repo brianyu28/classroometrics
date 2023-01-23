@@ -37,7 +37,7 @@ class TeacherConsumer(WebsocketConsumer):
 
         # Only the owner of the room can join the teacher group
         self.user = self.scope["user"]
-        if self.user.id != room.id:
+        if self.user.id != room.owner.id:
             return
 
         self.group_name = WebsocketService.get_teacher_group_name_for_room_id(room_id)
