@@ -8,6 +8,7 @@ const config = {
   entry: {
     main: "./src/entrypoints/main.tsx",
     viewer: "./src/entrypoints/viewer.tsx",
+    activity: "./src/entrypoints/activity.tsx",
   },
   output: {
     path: path.resolve(__dirname, "dist"),

@@ -34,3 +34,20 @@ def viewer(request: HttpRequest, identifier: str) -> HttpResponse:
             "room_id": room.id if room else None,
         },
     )
+
+
+@xframe_options_exempt
+def activity(request: HttpRequest, identifier: str) -> HttpResponse:
+    """
+    Access an activity view for room.
+    Useful for embedding the activity in an iframe in another page.
+    """
+    room = RoomService.get_room_by_identifier(identifier)
+    return render(
+        request,
+        "core/activity.html",
+        {
+            "title": (room.title or "Classroometrics") if room else "Classroometrics",
+            "room_identifier": room.identifier if room else None,
+        },
+    )

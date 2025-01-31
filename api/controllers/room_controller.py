@@ -88,15 +88,12 @@ def room_viewer(request: HttpRequest, room_id: int) -> JsonResponse:
 
 
 @require_http_methods(["GET"])
-@require_authentication
 # pylint: disable=unused-argument
-def room_by_identifier(
-    user: User, request: HttpRequest, room_identifier: str
-) -> JsonResponse:
+def room_by_identifier(request: HttpRequest, room_identifier: str) -> JsonResponse:
     """
     Get the room for a teacher by its identifier.
     """
-    room = RoomService.get_room_for_user_by_identifier(room_identifier, user)
+    room = RoomService.get_room_by_identifier(room_identifier)
     if room is None:
         return api_error("No such room")
     return JsonResponse(RoomService.serialize_room(room, visible_only=False))

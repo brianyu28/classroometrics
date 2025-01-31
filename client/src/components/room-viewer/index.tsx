@@ -81,9 +81,9 @@ function RoomViewer({ id }: RoomViewerProps) {
 
   return (
     <div>
-      {readyState === ReadyState.CLOSED &&
+      {readyState === ReadyState.CLOSED && (
         <p>Connection closed. Trying to reconnect...</p>
-      }
+      )}
       {room.groups.length > 0 && (
         <MajorElementsViewer
           elements={room.groups[0]}

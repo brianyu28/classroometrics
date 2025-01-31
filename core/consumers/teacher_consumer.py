@@ -36,9 +36,12 @@ class TeacherConsumer(WebsocketConsumer):
             return
 
         # Only the owner of the room can join the teacher group
+        # Note: Disabling this to allow unauthenticated viewing.
+        """
         self.user = self.scope["user"]
         if self.user.id != room.owner.id:
             return
+        """
 
         self.group_name = WebsocketService.get_teacher_group_name_for_room_id(room_id)
         async_to_sync(self.channel_layer.group_add)(self.group_name, self.channel_name)

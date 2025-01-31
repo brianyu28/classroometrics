@@ -19,11 +19,17 @@ import { getCurrentTimestamp } from "crmet/util/dates";
 
 const ACTIVITY_LIFESPAN_SECONDS = 4;
 
-function RoomManager() {
+interface RoomManagerProps {
+  roomId: string;
+  embedView: boolean;
+}
+
+function RoomManager(props: Partial<RoomManagerProps> = {}) {
   const navigate = useNavigate();
   const params = useParams();
 
-  const roomIdentifier = params.roomIdentifier;
+  const roomIdentifier = params.roomIdentifier ?? props.roomId;
+  const embedView = props.embedView ?? false;
 
   const [room, setRoom, elementMap] = useRoom();
   const [elementActivity, setElementActivity] = useState<ElementActivity[]>([]);
@@ -38,7 +44,9 @@ function RoomManager() {
     useBooleanState(false);
   const [isInBatchToggleMode, toggleIsInBatchToggleMode] =
     useBooleanState(false);
-  const [questionsVisible, toggleQuestionsVisible] = useBooleanState(true);
+  const [questionsVisible, toggleQuestionsVisible] = useBooleanState(
+    embedView ? false : true
+  );
   const [showEditButtons, toggleEditButtons] = usePersistentBooleanState(
     true,
     "crmet_room_show_edit_buttons"
@@ -212,7 +220,8 @@ function RoomManager() {
   useHotkeys("d", toggleQuestionsEnabled, [room]);
   useHotkeys("e", toggleEditButtons);
 
-  if (isShowingActivityView) {
+  // Embedded view can only show the activity view.
+  if (embedView || isShowingActivityView) {
     return (
       <div>
         <RoomActivity
@@ -231,9 +240,9 @@ function RoomManager() {
   return (
     <div>
       <h2>Room{room !== null && `: ${room.title}`}</h2>
-      {readyState === ReadyState.CLOSED &&
+      {readyState === ReadyState.CLOSED && (
         <p>Connection closed. Trying to reconnect...</p>
-      }
+      )}
       <div>
         <button onClick={toggleIsShowingActivityView}>Activity View</button>
         <button onClick={navigateToAllRooms}>All Rooms</button>
